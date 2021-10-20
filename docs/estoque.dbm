@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.1-beta" last-position="0,0" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database">
+</database>
+
+<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="marca">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="380" y="240"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="pk_marca" type="pk-constr" table="public.marca">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="unidade_medida">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="340" y="460"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="fracionado" not-null="true" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="pk_unidade_medida" type="pk-constr" table="public.unidade_medida">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="grupo_produto">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1180" y="280"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="sub_grupo">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_grupo_produto" type="pk-constr" table="public.grupo_produto">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="produto">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="760" y="260"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="descricao">
+		<type name="text" length="0"/>
+	</column>
+	<column name="preco" not-null="true" default-value="0.0">
+		<type name="numeric" length="12" precision="4"/>
+	</column>
+	<column name="estoque" default-value="0.0">
+		<type name="numeric" length="12" precision="4"/>
+	</column>
+	<column name="estoque_minimo" default-value="0">
+		<type name="numeric" length="12" precision="4"/>
+	</column>
+	<column name="data_ultima_compra">
+		<type name="timestamp" length="0"/>
+	</column>
+</table>
+
+<relationship name="marca_has_many_produto" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83b978"
+	 src-table="public.marca"
+	 dst-table="public.produto"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="unidade_medida_has_many_produto" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#20e523"
+	 src-table="public.unidade_medida"
+	 dst-table="public.produto"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="grupo_produto_has_many_produto" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#84f7b0"
+	 src-table="public.grupo_produto"
+	 dst-table="public.produto"
+	 src-required="false" dst-required="false"/>
+
+<constraint name="fk_subgrupo" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.grupo_produto" table="public.grupo_produto">
+	<columns names="sub_grupo" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_grupo_produto_grupo_produto" type="relfk"
+	 src-table="public.grupo_produto"
+	 dst-table="public.grupo_produto"
+	 src-required="false" dst-required="false">
+	<line>
+		<position x="1429.65" y="330.9"/>
+	<position x="1429.65" y="269"/>
+	<position x="1339.1" y="269"/>
+	</line>
+</relationship>
+
+</dbmodel>
