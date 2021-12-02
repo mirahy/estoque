@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package queries;
+package br.edu.ifms.estoque.queries;
 
 import br.edu.ifms.estoque.database.Conexao;
 import br.edu.ifms.estoque.model.GrupoProduto;
@@ -23,6 +23,8 @@ public class GrupoProdutoQueries {
     private PreparedStatement selectAllGrupos;
     private PreparedStatement selectGrupoByNome;
     private PreparedStatement insertNovoGrupo;
+    private PreparedStatement insertNovoGrupoSemSubgrupo;
+    private PreparedStatement deleteSelectedGrupo;
 
     public GrupoProdutoQueries() {
         try {
@@ -34,7 +36,8 @@ public class GrupoProdutoQueries {
             selectAllGrupos = conn.prepareStatement(
                     "SELECT gp.id, gp.nome, lgp.id as subgrupo_id, lgp.nome as subgrupo_nome "
                     + "  FROM grupo_produto AS gp"
-                    + "  LEFT JOIN grupo_produto AS lgp");
+                    + "  LEFT JOIN grupo_produto AS lgp"
+                    + "    ON gp.sub_grupo = lgp.id");
             /**
              * Cria consulta que seleciona os grupos de produtos com o nome
              * informado
@@ -47,7 +50,13 @@ public class GrupoProdutoQueries {
             /**
              * Cria a inserção que adiciona uma nova entrada no banco de dados
              */
-            insertNovoGrupo = conn.prepareStatement("INSERT INTO grupo_produto (id, nome, sub_grupo) VALUES (?, ?, ?)");
+            insertNovoGrupo = conn.prepareStatement("INSERT INTO grupo_produto (nome, sub_grupo) VALUES (?, ?)");
+            insertNovoGrupoSemSubgrupo = conn.prepareStatement("INSERT INTO grupo_produto (nome) VALUES (?)");
+
+            /**
+             * Criar a SQL para exclusão dos dados
+             */
+            deleteSelectedGrupo = conn.prepareStatement("DELETE FROM grupo_produto WHERE id = ?");
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.exit(1);
@@ -77,9 +86,10 @@ public class GrupoProdutoQueries {
         } finally {
             try {
                 resultSet.close();
+                return results;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                close();
+//                close();
             }
         }
         return null;
@@ -111,25 +121,43 @@ public class GrupoProdutoQueries {
                 resultSet.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                close();
+//                close();
             }
         }
         return null;
     }
 
-    public int addGrupoProduto(Long id, String nome, GrupoProduto subGrupo) {
+    public int addGrupoProduto(String nome, GrupoProduto subGrupo) {
         int result = 0;
 
         try {
-            insertNovoGrupo.setLong(1, id);
-            insertNovoGrupo.setString(2, nome);
-            insertNovoGrupo.setLong(3, subGrupo.getId());
+            if (subGrupo == null) {
+                insertNovoGrupoSemSubgrupo.setString(1, nome);
+                result = insertNovoGrupoSemSubgrupo.executeUpdate();
+            } else {
+                insertNovoGrupo.setString(1, nome);
+                insertNovoGrupo.setLong(2, subGrupo.getId());
 
-            result = insertNovoGrupo.executeUpdate();
+                result = insertNovoGrupo.executeUpdate();
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            close();
+//            close();
+        }
+        return result;
+    }
+
+    public int deleteGrupoProduto(Long id) {
+        int result = 0;
+
+        try {
+            deleteSelectedGrupo.setLong(1, id);
+            result = deleteSelectedGrupo.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+//            close();
         }
         return result;
     }

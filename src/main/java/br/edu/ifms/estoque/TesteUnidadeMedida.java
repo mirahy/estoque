@@ -5,6 +5,7 @@
  */
 package br.edu.ifms.estoque;
 
+import br.edu.ifms.estoque.view.TelaUnidadeMedida;
 import javax.swing.JFrame;
 
 /**
