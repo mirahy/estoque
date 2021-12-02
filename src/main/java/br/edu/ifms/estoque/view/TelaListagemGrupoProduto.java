@@ -13,7 +13,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -53,7 +51,7 @@ public class TelaListagemGrupoProduto extends JFrame {
         btEditar = new JButton("Editar");
         btExcluir = new JButton("Excluir");
         btFechar = new JButton("Fechar");
-        
+
         ButtonHandler handler = new ButtonHandler();
         btInserir.addActionListener(handler);
         btEditar.addActionListener(handler);
@@ -69,12 +67,12 @@ public class TelaListagemGrupoProduto extends JFrame {
         painelBotoes.add(btExcluir);
         painelBotoes.add(btFechar);
     }
-    
+
     private void atualizarTabela() {
         modelo.atualizaTabela();
     }
 
-    private void criarTabela() {        
+    private void criarTabela() {
         modelo = new GrupoProdutoResultSetTableModel();
         tabela = new JTable(modelo);
         tabela.setSize(640, 480);
@@ -98,6 +96,26 @@ public class TelaListagemGrupoProduto extends JFrame {
         add(painelFundo);
     }
 
+    private boolean isRowSelected() {
+        int index = tabela.getSelectedRow();
+        if (index < 0) {
+            JOptionPane.showMessageDialog(TelaListagemGrupoProduto.this,
+                    "Você deve selecionar um item para alterar/excluir um Grupo de Produto!",
+                    "Alterar/Excluir Grupo de Produto", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private void showTelaCadastro(GrupoProduto grupo) {
+        TelaGrupoProduto tela = new TelaGrupoProduto(TelaListagemGrupoProduto.this);
+        if (grupo != null) {
+            tela.setGrupoProduto(grupo);
+        }
+        tela.setVisible(true);
+        atualizarTabela();
+    }
+
     private class ButtonHandler implements ActionListener {
 
         @Override
@@ -107,25 +125,24 @@ public class TelaListagemGrupoProduto extends JFrame {
                 modelo.disconnect();
                 dispose();
             } else if (source == btInserir) {
-                TelaGrupoProduto tela = new TelaGrupoProduto(TelaListagemGrupoProduto.this);
-                tela.setVisible(true);
-                atualizarTabela();
-            } else if (source == btExcluir) {
+                showTelaCadastro(null);
+            } else if (source == btExcluir && isRowSelected()) {
                 int index = tabela.getSelectedRow();
-                if (index < 0) {
-                    JOptionPane.showMessageDialog(TelaListagemGrupoProduto.this, 
-                            "Você deve selecionar um item para excluir!", 
-                            "Excluir Grupo de Produto", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    Object obj = modelo.getValueAt(index, 0);
-                    Long id = (Long) obj;
-                    queries.deleteGrupoProduto(id);
-                    JOptionPane.showMessageDialog(TelaListagemGrupoProduto.this, 
-                            "Grupo de Produto excluído com sucesso!", 
-                            "Excluir Grupo de Produto", 
-                            JOptionPane.INFORMATION_MESSAGE);
-                    atualizarTabela();
-                }
+                Object obj = modelo.getValueAt(index, 0);
+                Long id = (Long) obj;
+                queries.deleteGrupoProduto(id);
+                JOptionPane.showMessageDialog(TelaListagemGrupoProduto.this,
+                        "Grupo de Produto excluído com sucesso!",
+                        "Excluir Grupo de Produto",
+                        JOptionPane.INFORMATION_MESSAGE);
+                atualizarTabela();
+            } else if (source == btEditar && isRowSelected()) {
+                int index = tabela.getSelectedRow();
+                Object obj = modelo.getValueAt(index, 0);
+                Long id = (Long) obj;
+                GrupoProduto grupo = queries.getGrupoPorId(id);
+
+                showTelaCadastro(grupo);
             }
         }
 

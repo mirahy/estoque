@@ -78,6 +78,10 @@ public class TelaGrupoProduto extends JDialog {
         }
         return true;
     }
+    
+    public void setGrupoProduto(GrupoProduto grupo) {
+        this.grupoProduto = grupo;
+    }
 
     public GrupoProduto getGrupoProduto() {
         return this.grupoProduto;

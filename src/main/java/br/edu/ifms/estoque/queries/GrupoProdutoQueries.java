@@ -22,6 +22,7 @@ public class GrupoProdutoQueries {
     private Conexao conexao;
     private PreparedStatement selectAllGrupos;
     private PreparedStatement selectGrupoByNome;
+    private PreparedStatement selectGrupoById;
     private PreparedStatement insertNovoGrupo;
     private PreparedStatement insertNovoGrupoSemSubgrupo;
     private PreparedStatement deleteSelectedGrupo;
@@ -47,6 +48,16 @@ public class GrupoProdutoQueries {
                     + "  FROM grupo_produto AS gp"
                     + "  LEFT JOIN grupo_produto AS lgp ON gp.sub_grupo = lgp.id"
                     + " WHERE gp.nome LIKE ?");
+
+            /**
+             * Cria consulta que seleciona um grupo de produto pelo ID informado
+             */
+            selectGrupoById = conn.prepareStatement(
+                    "SELECT gp.id, gp.nome, lgp.id as subgrupo_id, lgp.nome as subgrupo_nome "
+                    + "  FROM grupo_produto AS gp"
+                    + "  LEFT JOIN grupo_produto AS lgp ON gp.sub_grupo = lgp.id"
+                    + " WHERE gp.id = ?");
+
             /**
              * Cria a inserção que adiciona uma nova entrada no banco de dados
              */
@@ -86,13 +97,12 @@ public class GrupoProdutoQueries {
         } finally {
             try {
                 resultSet.close();
-                return results;
             } catch (SQLException ex) {
                 ex.printStackTrace();
 //                close();
             }
         }
-        return null;
+        return results;
     }
 
     public List<GrupoProduto> getGruposPorNome(String nome) {
@@ -124,7 +134,37 @@ public class GrupoProdutoQueries {
 //                close();
             }
         }
-        return null;
+        return results;
+    }
+
+    public GrupoProduto getGrupoPorId(Long id) {
+        ResultSet resultSet = null;
+        GrupoProduto grupo = null;
+        try {
+            selectGrupoById.setLong(1, id);
+            resultSet = selectGrupoByNome.executeQuery();
+            if (resultSet.next()) {
+                GrupoProduto subGrupo = new GrupoProduto(
+                        resultSet.getLong("subgrupo_id"),
+                        resultSet.getString("subgrupo_nome"), null);
+
+                grupo = new GrupoProduto(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nome"),
+                        subGrupo
+                );
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+//                close();
+            }
+        }
+        return grupo;
     }
 
     public int addGrupoProduto(String nome, GrupoProduto subGrupo) {
