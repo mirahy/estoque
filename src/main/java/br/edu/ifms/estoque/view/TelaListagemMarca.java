@@ -5,7 +5,9 @@
  */
 package br.edu.ifms.estoque.view;
 
+import br.edu.ifms.estoque.dao.IMarcaDao;
 import br.edu.ifms.estoque.database.MarcaResultSetTableModel;
+import br.edu.ifms.estoque.factory.MarcaDaoFactory;
 import br.edu.ifms.estoque.model.Marca;
 import br.edu.ifms.estoque.queries.MarcaQueries;
 import java.awt.BorderLayout;
@@ -36,11 +38,12 @@ public class TelaListagemMarca extends JFrame {
     private JButton btEditar;
     private JButton btFechar;
     private MarcaResultSetTableModel modelo;
-    private MarcaQueries queries;
+    private IMarcaDao dao;
 
     public TelaListagemMarca() {
         super("Listagem de Marcas");
-        queries = new MarcaQueries();
+        MarcaDaoFactory factory = new MarcaDaoFactory();
+        dao = (IMarcaDao) factory.createObject();
 
         criarBotoes();
         criarTabela();
@@ -130,7 +133,8 @@ public class TelaListagemMarca extends JFrame {
                 int index = tabela.getSelectedRow();
                 Object obj = modelo.getValueAt(index, 0);
                 Long id = (Long) obj;
-                queries.deleteMarca(id);
+                Marca marca = dao.buscarPorId(id);
+                dao.excluir(marca);
                 JOptionPane.showMessageDialog(TelaListagemMarca.this,
                         "Marca excluída com sucesso!",
                         "Excluir Marca",
@@ -140,7 +144,7 @@ public class TelaListagemMarca extends JFrame {
                 int index = tabela.getSelectedRow();
                 Object obj = modelo.getValueAt(index, 0);
                 Long id = (Long) obj;
-                Marca marca = queries.getMarcaPorId(id);
+                Marca marca = dao.buscarPorId(id);
                 
                 showTelaCadastro(marca);
             }

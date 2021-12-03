@@ -4,8 +4,10 @@
  */
 package br.edu.ifms.estoque.database;
 
+import br.edu.ifms.estoque.dao.IMarcaDao;
+import br.edu.ifms.estoque.factory.MarcaDaoFactory;
 import br.edu.ifms.estoque.model.Marca;
-import br.edu.ifms.estoque.queries.MarcaQueries;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -15,18 +17,19 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MarcaResultSetTableModel extends AbstractTableModel {
     
-    private MarcaQueries queries;
-    private List<Marca> lista;
+    private IMarcaDao dao;
+    private List<Marca> lista = new ArrayList();
     private String[] colunas = {"Id", "Nome"};
 
     public MarcaResultSetTableModel() {
-        queries = new MarcaQueries();
-        lista = queries.getAllMarcas();
+        MarcaDaoFactory factory = new MarcaDaoFactory();
+        dao = (IMarcaDao) factory.createObject();
+        atualizaTabela();
     }
 
     public void atualizaTabela() {
         lista.clear();
-        lista.addAll(queries.getAllMarcas());
+        lista.addAll(dao.listar());
         // informa que uma nova consulta foi gerada, portanto deve atualizar os dados
         fireTableStructureChanged();
     }
@@ -74,7 +77,7 @@ public class MarcaResultSetTableModel extends AbstractTableModel {
     }
     
     public void disconnect() {
-        queries.close();
+        
     }
     
 }

@@ -5,6 +5,8 @@
  */
 package br.edu.ifms.estoque.view;
 
+import br.edu.ifms.estoque.dao.IMarcaDao;
+import br.edu.ifms.estoque.factory.MarcaDaoFactory;
 import br.edu.ifms.estoque.model.Marca;
 import br.edu.ifms.estoque.queries.MarcaQueries;
 import java.awt.BorderLayout;
@@ -33,7 +35,7 @@ public class TelaMarca extends JDialog {
     private JButton botaoSalvar;
     private JButton botaoFechar;
     private Marca marca;
-    private MarcaQueries queries;
+    private IMarcaDao dao;
 
     public TelaMarca(Frame telaPai) {
         super(telaPai);
@@ -43,7 +45,8 @@ public class TelaMarca extends JDialog {
         setLocationRelativeTo(null);
         setModal(true);
         this.marca = new Marca();
-        this.queries = new MarcaQueries();
+        MarcaDaoFactory factory = new MarcaDaoFactory();
+        this.dao = (IMarcaDao) factory.createObject();
 
         initComponents();
     }
@@ -133,9 +136,9 @@ public class TelaMarca extends JDialog {
                     marca.setId(contemNumero ? Long.parseLong(sId) : null);
                     marca.setNome(campoNomeMarca.getText());
                     if (contemNumero) {
-                        queries.updateMarca(marca.getId(), marca.getNome());
+                        dao.alterar(marca);
                     } else {
-                        queries.addMarca(marca.getNome());
+                        dao.inserir(marca);
                     }
                     limpar();
 
