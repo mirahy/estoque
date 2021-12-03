@@ -142,7 +142,7 @@ public class GrupoProdutoQueries {
         GrupoProduto grupo = null;
         try {
             selectGrupoById.setLong(1, id);
-            resultSet = selectGrupoByNome.executeQuery();
+            resultSet = selectGrupoById.executeQuery();
             if (resultSet.next()) {
                 GrupoProduto subGrupo = new GrupoProduto(
                         resultSet.getLong("subgrupo_id"),

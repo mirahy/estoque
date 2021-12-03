@@ -7,14 +7,22 @@ package br.edu.ifms.estoque.view;
 
 import br.edu.ifms.estoque.model.GrupoProduto;
 import br.edu.ifms.estoque.queries.GrupoProdutoQueries;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -25,6 +33,7 @@ public class TelaGrupoProduto extends JDialog {
 
     private JTextField campoId;
     private JTextField campoNome;
+    private JComboBox comboSubgrupo;
     private JButton botaoSalvar;
     private JButton botaoFechar;
     private GrupoProduto grupoProduto;
@@ -34,39 +43,78 @@ public class TelaGrupoProduto extends JDialog {
         super(telaPai);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(300, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setModal(true);
         this.grupoProduto = new GrupoProduto();
+        queries = new GrupoProdutoQueries();
 
+        initComponents();
+    }
+
+    private void initComponents() {
+        Font font = new Font("Times", Font.PLAIN, 20);
+        JLabel titulo = new JLabel("Formulário de Cadastro/Alteração");
+        titulo.setFont(font);
+        titulo.setHorizontalAlignment(JLabel.CENTER);
+
+        add(titulo, BorderLayout.PAGE_START);
+        add(criaPainelCampos(), BorderLayout.CENTER);
+        add(criaPainelBotoes(), BorderLayout.PAGE_END);
+        add(Box.createHorizontalGlue(), BorderLayout.LINE_START);
+        add(Box.createHorizontalGlue(), BorderLayout.LINE_END);
+    }
+
+    private JPanel criaPainelCampos() {
         JLabel lblId = new JLabel("Código: ");
-        add(lblId);
-        campoId = new JTextField(20);
+        lblId.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campoId = new JTextField(5);
         campoId.setEditable(false);
-        add(campoId);
 
-        add(new JLabel("Nome da Grupo de Produto: "));
+        JLabel lblNome = new JLabel("Nome: ");
+        lblNome.setAlignmentX(Component.LEFT_ALIGNMENT);
         campoNome = new JTextField(20);
         campoNome.setFocusable(true);
         campoNome.requestFocusInWindow();
-        add(campoNome);
 
+        JLabel lblSubgrupo = new JLabel("Grupo Pai: ");
+        lblSubgrupo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // traz a lista de subgrupos cadastrados
+        List<GrupoProduto> lista = queries.getAllGrupos();
+        comboSubgrupo = new JComboBox(lista.toArray());
+
+        limpar();
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(lblId);
+        panel.add(campoId);
+        panel.add(lblNome);
+        panel.add(campoNome);
+        panel.add(lblSubgrupo);
+        panel.add(comboSubgrupo);
+
+        return panel;
+    }
+
+    private JPanel criaPainelBotoes() {
         ActionHandler handler = new ActionHandler();
-
         botaoSalvar = new JButton("Salvar");
         botaoSalvar.addActionListener(handler);
-        add(botaoSalvar);
 
         botaoFechar = new JButton("Fechar");
         botaoFechar.addActionListener(handler);
-        add(botaoFechar);
-        
-        queries = new GrupoProdutoQueries();
+
+        JPanel panel = new JPanel();
+        panel.add(botaoSalvar);
+        panel.add(botaoFechar);
+        return panel;
     }
 
     private void limpar() {
         campoId.setText("");
         campoNome.setText("");
+        comboSubgrupo.setSelectedItem(null);
     }
 
     private boolean validarCampos() {
@@ -78,9 +126,13 @@ public class TelaGrupoProduto extends JDialog {
         }
         return true;
     }
-    
+
     public void setGrupoProduto(GrupoProduto grupo) {
         this.grupoProduto = grupo;
+        
+        campoId.setText(grupo.getId().toString());
+        campoNome.setText(grupo.getNome());
+        comboSubgrupo.setSelectedItem(grupo.getSubgrupo());
     }
 
     public GrupoProduto getGrupoProduto() {
@@ -96,12 +148,15 @@ public class TelaGrupoProduto extends JDialog {
 
                     String sId = campoId.getText();
                     Boolean contemNumero = sId.matches("\\d+");
-                    
+
                     grupoProduto.setId(contemNumero ? Long.parseLong(sId) : null);
                     grupoProduto.setNome(campoNome.getText());
-                    
+                    if (comboSubgrupo.getSelectedIndex() > -1) {
+                        grupoProduto.setSubgrupo((GrupoProduto) comboSubgrupo.getSelectedItem());
+                    }
+
                     if (grupoProduto.getId() == null) {
-                        queries.addGrupoProduto(grupoProduto.getNome(), 
+                        queries.addGrupoProduto(grupoProduto.getNome(),
                                 grupoProduto.getSubgrupo());
                     }
 

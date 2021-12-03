@@ -11,13 +11,15 @@ package br.edu.ifms.estoque.model;
 public class UnidadeMedida {
     private Long id;
     private String nome;
+    private Boolean fracionado;
 
     public UnidadeMedida() {
     }
 
-    public UnidadeMedida(Long id, String nome) {
+    public UnidadeMedida(Long id, String nome, Boolean fracionado) {
         this.id = id;
         this.nome = nome;
+        this.fracionado = fracionado;
     }
 
     public Long getId() {
@@ -34,6 +36,18 @@ public class UnidadeMedida {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Boolean getFracionado() {
+        return fracionado;
+    }
+
+    public void setFracionado(Boolean fracionado) {
+        this.fracionado = fracionado;
+    }
+    
+    public Boolean isFracionado() {
+        return this.fracionado;
     }
     
 }

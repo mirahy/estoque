@@ -5,9 +5,9 @@
  */
 package br.edu.ifms.estoque.view;
 
-import br.edu.ifms.estoque.database.MarcaResultSetTableModel;
-import br.edu.ifms.estoque.model.Marca;
-import br.edu.ifms.estoque.queries.MarcaQueries;
+import br.edu.ifms.estoque.database.UnidadeMedidaResultSetTableModel;
+import br.edu.ifms.estoque.model.UnidadeMedida;
+import br.edu.ifms.estoque.queries.UnidadeMedidaQueries;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -25,7 +25,7 @@ import javax.swing.JTable;
  *
  * @author santos
  */
-public class TelaListagemMarca extends JFrame {
+public class TelaListagemUnidadeMedida extends JFrame {
 
     private JPanel painelFundo;
     private JPanel painelBotoes;
@@ -35,12 +35,12 @@ public class TelaListagemMarca extends JFrame {
     private JButton btExcluir;
     private JButton btEditar;
     private JButton btFechar;
-    private MarcaResultSetTableModel modelo;
-    private MarcaQueries queries;
+    private UnidadeMedidaResultSetTableModel modelo;
+    private UnidadeMedidaQueries queries;
 
-    public TelaListagemMarca() {
-        super("Listagem de Marcas");
-        queries = new MarcaQueries();
+    public TelaListagemUnidadeMedida() {
+        super("Listagem de Unidade de Medidas");
+        queries = new UnidadeMedidaQueries();
 
         criarBotoes();
         criarTabela();
@@ -73,10 +73,11 @@ public class TelaListagemMarca extends JFrame {
         modelo.atualizaTabela();
         tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(300);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(20);
     }
 
     private void criarTabela() {
-        modelo = new MarcaResultSetTableModel();
+        modelo = new UnidadeMedidaResultSetTableModel();
 
         tabela = new JTable(modelo);
         tabela.setSize(640, 480);
@@ -84,7 +85,7 @@ public class TelaListagemMarca extends JFrame {
         barraRolagem = new JScrollPane(tabela);
 
         Font font = new Font("Times", Font.PLAIN, 30);
-        JLabel titulo = new JLabel("Listagem de Marcas");
+        JLabel titulo = new JLabel("Listagem de Unidade de Medidas");
         titulo.setFont(font);
         titulo.setHorizontalAlignment(JLabel.CENTER);
 
@@ -100,18 +101,18 @@ public class TelaListagemMarca extends JFrame {
     private boolean isRowSelected() {
         int index = tabela.getSelectedRow();
         if (index < 0) {
-            JOptionPane.showMessageDialog(TelaListagemMarca.this,
-                    "Você deve selecionar um item para alterar/excluir uma Marca!",
-                    "Alterar/Excluir Marca", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(TelaListagemUnidadeMedida.this,
+                    "Você deve selecionar um item para alterar/excluir uma Unidade de Medida!",
+                    "Alterar/Excluir Unidade de Medida", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
     }
 
-    private void showTelaCadastro(Marca marca) {
-        TelaMarca tela = new TelaMarca(TelaListagemMarca.this);
+    private void showTelaCadastro(UnidadeMedida marca) {
+        TelaUnidadeMedida tela = new TelaUnidadeMedida(TelaListagemUnidadeMedida.this);
         if (marca != null) {
-            tela.setMarca(marca);
+            tela.setUnidadeMedida(marca);
         }
         tela.setVisible(true);
         atualizarTabela();
@@ -130,19 +131,19 @@ public class TelaListagemMarca extends JFrame {
                 int index = tabela.getSelectedRow();
                 Object obj = modelo.getValueAt(index, 0);
                 Long id = (Long) obj;
-                queries.deleteMarca(id);
-                JOptionPane.showMessageDialog(TelaListagemMarca.this,
-                        "Marca excluída com sucesso!",
-                        "Excluir Marca",
+                queries.deleteUnidadeMedida(id);
+                JOptionPane.showMessageDialog(TelaListagemUnidadeMedida.this,
+                        "Unidade de Medida excluída com sucesso!",
+                        "Excluir Unidade de Medida",
                         JOptionPane.INFORMATION_MESSAGE);
                 atualizarTabela();
             } else if (source == btEditar && isRowSelected()) {
                 int index = tabela.getSelectedRow();
                 Object obj = modelo.getValueAt(index, 0);
                 Long id = (Long) obj;
-                Marca marca = queries.getMarcaPorId(id);
+                UnidadeMedida unidadeMedida = queries.getUnidadeMedidaPorId(id);
                 
-                showTelaCadastro(marca);
+                showTelaCadastro(unidadeMedida);
             }
         }
 

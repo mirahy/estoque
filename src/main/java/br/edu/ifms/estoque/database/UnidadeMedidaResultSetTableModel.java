@@ -4,29 +4,29 @@
  */
 package br.edu.ifms.estoque.database;
 
-import br.edu.ifms.estoque.model.GrupoProduto;
-import br.edu.ifms.estoque.queries.GrupoProdutoQueries;
+import br.edu.ifms.estoque.model.UnidadeMedida;
+import br.edu.ifms.estoque.queries.UnidadeMedidaQueries;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author santos
+ * @author 1513003
  */
-public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
+public class UnidadeMedidaResultSetTableModel extends AbstractTableModel {
+    
+    private UnidadeMedidaQueries queries;
+    private List<UnidadeMedida> lista;
+    private String[] colunas = {"Id", "Nome", "Fracionado"};
 
-    private GrupoProdutoQueries queries;
-    private List<GrupoProduto> lista;
-    private String[] colunas = {"Id", "Nome", "Subgrupo"};
-
-    public GrupoProdutoResultSetTableModel() {
-        queries = new GrupoProdutoQueries();
-        lista = queries.getAllGrupos();
+    public UnidadeMedidaResultSetTableModel() {
+        queries = new UnidadeMedidaQueries();
+        lista = queries.getAllUnidadeMedidas();
     }
 
     public void atualizaTabela() {
         lista.clear();
-        lista.addAll(queries.getAllGrupos());
+        lista.addAll(queries.getAllUnidadeMedidas());
         // informa que uma nova consulta foi gerada, portanto deve atualizar os dados
         fireTableStructureChanged();
     }
@@ -44,11 +44,11 @@ public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        GrupoProduto gp = lista.get(row);
+        UnidadeMedida obj = lista.get(row);
         switch(col) {
-            case 0: return gp.getId();
-            case 1: return gp.getNome();
-            case 2: return gp.getSubgrupo() != null ? gp.getSubgrupo().getNome() : "";
+            case 0: return obj.getId();
+            case 1: return obj.getNome();
+            case 2: return obj.isFracionado() ? "Sim" : "Não";
         }
         return "";
     }
@@ -63,7 +63,7 @@ public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch(columnIndex) {
             case 0: return Integer.class;
-            case 1:
+            case 1: 
             case 2: return String.class;
         }
         // se ocorrer falhar, retorna o padrão Object
@@ -78,5 +78,5 @@ public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
     public void disconnect() {
         queries.close();
     }
-
+    
 }

@@ -19,11 +19,17 @@ public class Produto {
     private BigDecimal estoque;
     private BigDecimal estoqueMinimo;
     private LocalDateTime dataUltimaCompra;
+    private GrupoProduto grupoProduto;
+    private Marca marca;
+    private UnidadeMedida unidadeMedida;
 
     public Produto() {
     }
 
-    public Produto(Long id, String nome, String descricao, BigDecimal preco, BigDecimal estoque, BigDecimal estoqueMinimo, LocalDateTime dataUltimaCompra) {
+    public Produto(Long id, String nome, String descricao, BigDecimal preco, 
+            BigDecimal estoque, BigDecimal estoqueMinimo, 
+            LocalDateTime dataUltimaCompra, GrupoProduto grupoProduto, 
+            Marca marca, UnidadeMedida unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -31,6 +37,9 @@ public class Produto {
         this.estoque = estoque;
         this.estoqueMinimo = estoqueMinimo;
         this.dataUltimaCompra = dataUltimaCompra;
+        this.grupoProduto = grupoProduto;
+        this.marca = marca;
+        this.unidadeMedida = unidadeMedida;
     }
 
     public Long getId() {
@@ -87,6 +96,30 @@ public class Produto {
 
     public void setDataUltimaCompra(LocalDateTime dataUltimaCompra) {
         this.dataUltimaCompra = dataUltimaCompra;
+    }
+
+    public GrupoProduto getGrupoProduto() {
+        return grupoProduto;
+    }
+
+    public void setGrupoProduto(GrupoProduto grupoProduto) {
+        this.grupoProduto = grupoProduto;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public UnidadeMedida getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
     }
     
 }
