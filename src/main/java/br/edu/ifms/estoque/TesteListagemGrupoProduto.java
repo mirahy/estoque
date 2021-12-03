@@ -5,19 +5,20 @@
  */
 package br.edu.ifms.estoque;
 
-import br.edu.ifms.estoque.view.TelaProduto;
+import br.edu.ifms.estoque.view.TelaListagemGrupoProduto;
 import javax.swing.JFrame;
 
 /**
  *
  * @author santos
  */
-public class TesteProduto {
+public class TesteListagemGrupoProduto {
 
     public static void main(String[] args) {
-        TelaProduto tela = new TelaProduto();
+        TelaListagemGrupoProduto tela = new TelaListagemGrupoProduto();
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        tela.setSize(300, 250);
+        tela.pack();
+        tela.setLocationRelativeTo(null);
         tela.setVisible(true);
     }
 }

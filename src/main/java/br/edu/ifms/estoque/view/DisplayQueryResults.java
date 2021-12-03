@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package view;
+package br.edu.ifms.estoque.view;
 
 import br.edu.ifms.estoque.database.ResultSetTableModel;
 import java.awt.BorderLayout;
@@ -135,7 +135,7 @@ public class DisplayQueryResults extends JFrame {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             String text = filterText.getText();
-            if (text.isBlank() || text.isEmpty()) {
+            if (text.isEmpty()) {
                 sorter.setRowFilter(null);
             } else {
                 try {

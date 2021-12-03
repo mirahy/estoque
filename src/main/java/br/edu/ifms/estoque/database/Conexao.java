@@ -18,7 +18,7 @@ public class Conexao {
     private static Conexao conexao;
     
     private Conexao() throws SQLException {
-        String url = "jdbc:postgresql://localhost/estoque?user=postgres&password=postgres";
+        String url = "jdbc:postgresql://localhost/estoque?user=postgres&password=ifms";
         this.conn = DriverManager.getConnection(url);
     }
     
