@@ -7,6 +7,9 @@ package br.edu.ifms.estoque.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -16,10 +19,15 @@ public class Conexao {
     
     private Connection conn;
     private static Conexao conexao;
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("EstoqueDB");
     
     private Conexao() throws SQLException {
         String url = "jdbc:postgresql://localhost/estoque?user=postgres&password=postgres";
         this.conn = DriverManager.getConnection(url);
+    }
+    
+    public static EntityManager createEntityManager() {
+        return emf.createEntityManager();
     }
     
     public static Conexao getInstance() throws SQLException {
