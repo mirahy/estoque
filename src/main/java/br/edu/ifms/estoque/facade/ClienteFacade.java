@@ -4,6 +4,8 @@
  */
 package br.edu.ifms.estoque.facade;
 
+import br.edu.ifms.estoque.dao.ClienteDao;
+import br.edu.ifms.estoque.dao.IClienteDao;
 import br.edu.ifms.estoque.model.Cliente;
 import br.edu.ifms.estoque.view.TelaFormCliente;
 import java.awt.event.WindowAdapter;
@@ -17,8 +19,18 @@ import javax.swing.JTextField;
  */
 public class ClienteFacade {
     
-    public TelaFormCliente abrirFormulario(JFrame frame) {
-        TelaFormCliente dialog = new TelaFormCliente(frame, true);
+    private IClienteDao dao;
+    
+    public ClienteFacade(IClienteDao dao) {
+        this.dao = dao;
+    }
+    
+    public ClienteFacade() {
+        this(new ClienteDao());
+    }
+    
+    public TelaFormCliente abrirFormulario(JFrame frame, ClienteFacade facade) {
+        TelaFormCliente dialog = new TelaFormCliente(frame, true, facade);
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -46,6 +58,9 @@ public class ClienteFacade {
         cliente.setEmail(txtEmail.getText());
         cliente.setCpf(txtCpf.getText());
         
+        dao.inserir(cliente);
+        
+        return Boolean.TRUE;
     }
     
 }

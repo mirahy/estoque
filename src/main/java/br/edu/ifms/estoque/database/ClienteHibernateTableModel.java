@@ -53,5 +53,21 @@ public class ClienteHibernateTableModel extends AbstractTableModel {
                 return "";
         }
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        
+        if (columnIndex == 0) {
+            return Long.class;
+        }
+        return String.class;
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return colunas[column];
+    }
+    
+    
     
 }

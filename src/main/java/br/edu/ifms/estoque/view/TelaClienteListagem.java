@@ -5,6 +5,7 @@
 
 package br.edu.ifms.estoque.view;
 
+import br.edu.ifms.estoque.dao.ClienteDao;
 import br.edu.ifms.estoque.database.ClienteHibernateTableModel;
 import br.edu.ifms.estoque.facade.ClienteFacade;
 
@@ -152,8 +153,9 @@ public class TelaClienteListagem extends javax.swing.JFrame {
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
         // TODO add your handling code here:
-        TelaFormCliente form = facade.abrirFormulario(this);
+        TelaFormCliente form = facade.abrirFormulario(this, facade);
         form.setVisible(true);
+        model.refresh(null);
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     /**
