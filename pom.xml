@@ -35,11 +35,11 @@
     </properties>
     
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.15</version>
-        </dependency>
+        </dependency>-->
         
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -64,7 +64,7 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb-j5</artifactId>
             <version>2.2.4</version>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
 
     </dependencies>
