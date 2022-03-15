@@ -6,7 +6,6 @@ package br.edu.ifms.estoque.dao;
 
 import br.edu.ifms.estoque.database.Conexao;
 import br.edu.ifms.estoque.model.Cliente;
-import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

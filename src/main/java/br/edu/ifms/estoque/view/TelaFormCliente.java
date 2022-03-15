@@ -23,6 +23,10 @@ public class TelaFormCliente extends javax.swing.JDialog {
         this.facade = facade;
         initComponents();
     }
+    
+    public void setId(Long id) {
+        facade.carregarDados(id, txtId, txtNome, txtTelefone, txtEmail, txtCpf);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

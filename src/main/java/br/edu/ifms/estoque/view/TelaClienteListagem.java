@@ -5,7 +5,6 @@
 
 package br.edu.ifms.estoque.view;
 
-import br.edu.ifms.estoque.dao.ClienteDao;
 import br.edu.ifms.estoque.database.ClienteHibernateTableModel;
 import br.edu.ifms.estoque.facade.ClienteFacade;
 
@@ -23,6 +22,14 @@ public class TelaClienteListagem extends javax.swing.JFrame {
         model = new ClienteHibernateTableModel();
         facade = new ClienteFacade();
         initComponents();
+        
+        refresh();
+    }
+    
+    private void refresh() {
+        Boolean ativar = tabela.getSelectedRow() > -1;
+        btAlterar.setVisible(ativar);
+        btExcluir.setVisible(ativar);
     }
 
     /** This method is called from within the constructor to
@@ -43,7 +50,9 @@ public class TelaClienteListagem extends javax.swing.JFrame {
         btCadastrar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabela = new javax.swing.JTable();
+        btAlterar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,19 +122,48 @@ public class TelaClienteListagem extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(184, 218, 172));
 
-        jTable1.setModel(model);
-        jScrollPane1.setViewportView(jTable1);
+        tabela.setModel(model);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabela);
+
+        btAlterar.setText("Alterar");
+        btAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAlterarActionPerformed(evt);
+            }
+        });
+
+        btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btAlterar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btExcluir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btAlterar)
+                    .addComponent(btExcluir))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -152,11 +190,33 @@ public class TelaClienteListagem extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-        // TODO add your handling code here:
         TelaFormCliente form = facade.abrirFormulario(this, facade);
         form.setVisible(true);
-        model.refresh(null);
+        refresh();
     }//GEN-LAST:event_btCadastrarActionPerformed
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        refresh();
+    }//GEN-LAST:event_tabelaMouseClicked
+
+    private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
+        int row = tabela.getSelectedRow();
+        Long id = (Long) model.getValueAt(row, 0);
+        TelaFormCliente form = facade.editarFormulario(this, facade, id);
+        form.setVisible(true);
+        
+        model.refresh(null);
+        refresh();
+    }//GEN-LAST:event_btAlterarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        int row = tabela.getSelectedRow();
+        Long id = (Long) model.getValueAt(row, 0);
+        facade.excluir(this, id);
+        
+        model.refresh(null);
+        refresh();
+    }//GEN-LAST:event_btExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,15 +254,17 @@ public class TelaClienteListagem extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAlterar;
     private javax.swing.JButton btBuscar;
     private javax.swing.JButton btCadastrar;
+    private javax.swing.JButton btExcluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabela;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 

@@ -179,4 +179,9 @@ public class MarcaDaoImpl implements IMarcaDao {
         return resultList;
     }
 
+    @Override
+    public Object buscarPorId(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
