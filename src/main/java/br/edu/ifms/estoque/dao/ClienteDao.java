@@ -8,6 +8,8 @@ import br.edu.ifms.estoque.database.Conexao;
 import br.edu.ifms.estoque.model.Cliente;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -15,39 +17,53 @@ import javax.persistence.EntityManager;
  */
 public class ClienteDao implements IClienteDao {
 
-    private static final String jpql = " select c from Cliente c ";
-
-    public ClienteDao() {
-
-    }
+    private static final String JPQL = "SELECT c FROM Cliente c";
 
     private EntityManager getEntityManager() {
         return Conexao.createEntityManager();
     }
 
     @Override
-    public Cliente buscarPorId(Long id) {
+    public Cliente buscarPorId(Object object) {
         EntityManager em = getEntityManager();
+        Long id = (Long) object;
         Cliente cliente = em.find(Cliente.class, id);
-        em.detach(cliente);
+        em.close();
         return cliente;
     }
 
     @Override
     public List<Cliente> buscarPorNome(String nome) {
         EntityManager em = getEntityManager();
-        List<Cliente> clientes = em.createQuery(String.format("%s WHERE c.nome like ?1 ", jpql))
-                .setParameter(1, "%" + nome + "%")
-                .getResultList();
+        String condicao = "";
+        List<Cliente> clientes = null;
+        Boolean hasNome = nome != null && !nome.isBlank() && !nome.isEmpty();
+        if (hasNome) {
+            condicao = " WHERE c.nome LIKE ?1 ";
+        }
+        Query query = em.createQuery(JPQL + condicao);
+        if (hasNome) {
+            clientes = query.setParameter(1, "%" + nome + "%")
+                    .getResultList();
+        } else {
+            clientes = query.getResultList();
+        }
+        em.close();
+        
         return clientes;
     }
 
     @Override
     public Cliente inserir(Cliente object) {
         EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        em.persist(object);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (HibernateException ex) {
+            em.getTransaction().rollback();
+        }
+        em.close();
         return object;
     }
 
@@ -55,9 +71,14 @@ public class ClienteDao implements IClienteDao {
     public Cliente alterar(Cliente object) {
         EntityManager em = getEntityManager();
         em.detach(object);
-        em.getTransaction().begin();
-        em.merge(object);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.merge(object);
+            em.getTransaction().commit();
+        } catch (HibernateException ex) {
+            em.getTransaction().rollback();
+        }
+        em.close();
         return object;
     }
 
@@ -65,17 +86,19 @@ public class ClienteDao implements IClienteDao {
     public void excluir(Object object) {
         Long id = (Long) object;
         EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        em.remove(em.getReference(Cliente.class, id));
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.remove(em.getReference(Cliente.class, id));
+            em.getTransaction().commit();
+        } catch (HibernateException ex) {
+            em.getTransaction().rollback();
+        }
+        em.close();
     }
 
     @Override
     public List<Cliente> listar() {
-        EntityManager em = getEntityManager();
-        List<Cliente> clientes = em.createQuery(jpql)
-                .getResultList();
-        return clientes;
+        return buscarPorNome(null);
     }
 
 }

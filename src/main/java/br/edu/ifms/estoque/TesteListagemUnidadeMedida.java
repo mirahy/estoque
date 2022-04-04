@@ -5,19 +5,20 @@
  */
 package br.edu.ifms.estoque;
 
-import br.edu.ifms.estoque.view.TelaUnidadeMedidaAnterior;
+import br.edu.ifms.estoque.view.TelaListagemUnidadeMedida;
 import javax.swing.JFrame;
 
 /**
  *
  * @author santos
  */
-public class TesteUnidadeMedida {
+public class TesteListagemUnidadeMedida {
 
     public static void main(String[] args) {
-        TelaUnidadeMedidaAnterior tela = new TelaUnidadeMedidaAnterior();
+        TelaListagemUnidadeMedida tela = new TelaListagemUnidadeMedida();
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        tela.setSize(300, 200);
+        tela.pack();
+        tela.setLocationRelativeTo(null);
         tela.setVisible(true);
     }
 }

@@ -4,10 +4,8 @@
  */
 package br.edu.ifms.estoque.database;
 
-import br.edu.ifms.estoque.dao.IMarcaDao;
-import br.edu.ifms.estoque.factory.MarcaDaoFactory;
-import br.edu.ifms.estoque.model.Marca;
-import java.util.ArrayList;
+import br.edu.ifms.estoque.model.UnidadeMedida;
+import br.edu.ifms.estoque.queries.UnidadeMedidaQueries;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -15,21 +13,20 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author 1513003
  */
-public class MarcaResultSetTableModel extends AbstractTableModel {
+public class UnidadeMedidaResultSetTableModel extends AbstractTableModel {
     
-    private IMarcaDao dao;
-    private List<Marca> lista = new ArrayList();
-    private String[] colunas = {"Id", "Nome"};
+    private UnidadeMedidaQueries queries;
+    private List<UnidadeMedida> lista;
+    private String[] colunas = {"Id", "Nome", "Fracionado"};
 
-    public MarcaResultSetTableModel() {
-        MarcaDaoFactory factory = new MarcaDaoFactory();
-        dao = (IMarcaDao) factory.createObject();
-        atualizaTabela();
+    public UnidadeMedidaResultSetTableModel() {
+        queries = new UnidadeMedidaQueries();
+        lista = queries.getAllUnidadeMedidas();
     }
 
     public void atualizaTabela() {
         lista.clear();
-        lista.addAll(dao.listar());
+        lista.addAll(queries.getAllUnidadeMedidas());
         // informa que uma nova consulta foi gerada, portanto deve atualizar os dados
         fireTableStructureChanged();
     }
@@ -47,10 +44,11 @@ public class MarcaResultSetTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        Marca obj = lista.get(row);
+        UnidadeMedida obj = lista.get(row);
         switch(col) {
             case 0: return obj.getId();
             case 1: return obj.getNome();
+            case 2: return obj.isFracionado() ? "Sim" : "Não";
         }
         return "";
     }
@@ -65,7 +63,8 @@ public class MarcaResultSetTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch(columnIndex) {
             case 0: return Integer.class;
-            case 1: return String.class;
+            case 1: 
+            case 2: return String.class;
         }
         // se ocorrer falhar, retorna o padrão Object
         return Object.class;
@@ -77,7 +76,7 @@ public class MarcaResultSetTableModel extends AbstractTableModel {
     }
     
     public void disconnect() {
-        
+        queries.close();
     }
     
 }

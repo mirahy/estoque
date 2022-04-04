@@ -33,6 +33,7 @@ public class Produto implements Serializable {
     private BigDecimal estoque;
     private BigDecimal estoqueMinimo;
     private LocalDateTime dataUltimaCompra;
+<<<<<<< HEAD
     
     @ManyToOne
     private GrupoProduto grupo;
@@ -41,12 +42,19 @@ public class Produto implements Serializable {
     private Marca marca;
     
     @ManyToOne
+=======
+    private GrupoProduto grupoProduto;
+    private Marca marca;
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
     private UnidadeMedida unidadeMedida;
 
     public Produto() {
     }
 
-    public Produto(Long id, String nome, String descricao, BigDecimal preco, BigDecimal estoque, BigDecimal estoqueMinimo, LocalDateTime dataUltimaCompra) {
+    public Produto(Long id, String nome, String descricao, BigDecimal preco, 
+            BigDecimal estoque, BigDecimal estoqueMinimo, 
+            LocalDateTime dataUltimaCompra, GrupoProduto grupoProduto, 
+            Marca marca, UnidadeMedida unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -54,6 +62,9 @@ public class Produto implements Serializable {
         this.estoque = estoque;
         this.estoqueMinimo = estoqueMinimo;
         this.dataUltimaCompra = dataUltimaCompra;
+        this.grupoProduto = grupoProduto;
+        this.marca = marca;
+        this.unidadeMedida = unidadeMedida;
     }
 
     public Long getId() {
@@ -112,12 +123,21 @@ public class Produto implements Serializable {
         this.dataUltimaCompra = dataUltimaCompra;
     }
 
+<<<<<<< HEAD
     public GrupoProduto getGrupo() {
         return grupo;
     }
 
     public void setGrupo(GrupoProduto grupo) {
         this.grupo = grupo;
+=======
+    public GrupoProduto getGrupoProduto() {
+        return grupoProduto;
+    }
+
+    public void setGrupoProduto(GrupoProduto grupoProduto) {
+        this.grupoProduto = grupoProduto;
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
     }
 
     public Marca getMarca() {

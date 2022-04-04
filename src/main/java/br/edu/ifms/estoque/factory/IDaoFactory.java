@@ -10,5 +10,5 @@ package br.edu.ifms.estoque.factory;
  */
 public interface IDaoFactory {
 
-    Object createObject(String sgbd);
+    Object createObject();
 }

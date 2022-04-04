@@ -15,15 +15,13 @@ import java.sql.SQLException;
 public class MarcaDaoFactory implements IDaoFactory {
 
     @Override
-    public Object createObject(String sgbd) {
-        if ("postgres".equals(sgbd)) {
-            try {
-                return new MarcaDaoImpl(Conexao.getInstance());
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+    public Object createObject() {
+        try {
+            return new MarcaDaoImpl(Conexao.getInstance());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return null;
     }
-    
+
 }

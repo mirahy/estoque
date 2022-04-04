@@ -4,6 +4,7 @@
  */
 package br.edu.ifms.estoque.model;
 
+<<<<<<< HEAD
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+=======
+import java.util.Objects;
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
 
 /**
  *
@@ -73,5 +77,37 @@ public class GrupoProduto implements Serializable {
         array[1] = this.nome;
         array[2] = this.subgrupo;
         return array;
+    }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.nome);
+        hash = 59 * hash + Objects.hashCode(this.subgrupo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GrupoProduto other = (GrupoProduto) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 }

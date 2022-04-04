@@ -14,6 +14,14 @@
 -- -- ddl-end --
 -- 
 
+CREATE SEQUENCE public.marca_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1;
+
+ALTER SEQUENCE public.marca_id_seq
+    OWNER TO postgres;
+
 -- object: public.marca | type: TABLE --
 -- DROP TABLE IF EXISTS public.marca CASCADE;
 CREATE TABLE public.marca(
@@ -26,16 +34,28 @@ CREATE TABLE public.marca(
 ALTER TABLE public.marca OWNER TO postgres;
 -- ddl-end --
 
-INSERT INTO public.marca (id, nome) VALUES (E'1', E'Leite Moça');
+ALTER TABLE public.marca
+    ALTER COLUMN id SET DEFAULT nextval('marca_id_seq');
+
+
+INSERT INTO public.marca (nome) VALUES (E'Leite Moça');
 -- ddl-end --
-INSERT INTO public.marca (id, nome) VALUES (E'2', E'Isopor');
+INSERT INTO public.marca (nome) VALUES (E'Isopor');
 -- ddl-end --
-INSERT INTO public.marca (id, nome) VALUES (E'3', E'Cotonete');
+INSERT INTO public.marca (nome) VALUES (E'Cotonete');
 -- ddl-end --
-INSERT INTO public.marca (id, nome) VALUES (E'4', E'Maizena');
+INSERT INTO public.marca (nome) VALUES (E'Maizena');
 -- ddl-end --
-INSERT INTO public.marca (id, nome) VALUES (E'5', E'Bombril');
+INSERT INTO public.marca (nome) VALUES (E'Bombril');
 -- ddl-end --
+
+CREATE SEQUENCE public.unidade_medida_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1;
+
+ALTER SEQUENCE public.unidade_medida_id_seq
+    OWNER TO postgres;
 
 -- object: public.unidade_medida | type: TABLE --
 -- DROP TABLE IF EXISTS public.unidade_medida CASCADE;
@@ -46,9 +66,22 @@ CREATE TABLE public.unidade_medida(
 	CONSTRAINT pk_unidade_medida PRIMARY KEY (id)
 
 );
+
+ALTER TABLE public.unidade_medida
+    ALTER COLUMN id SET DEFAULT nextval('unidade_medida_id_seq');
+
 -- ddl-end --
 ALTER TABLE public.unidade_medida OWNER TO postgres;
 -- ddl-end --
+
+
+CREATE SEQUENCE public.grupo_produto_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1;
+
+ALTER SEQUENCE public.grupo_produto_id_seq
+    OWNER TO postgres;
 
 -- object: public.grupo_produto | type: TABLE --
 -- DROP TABLE IF EXISTS public.grupo_produto CASCADE;
@@ -60,6 +93,11 @@ CREATE TABLE public.grupo_produto(
 
 );
 -- ddl-end --
+
+
+ALTER TABLE public.grupo_produto
+    ALTER COLUMN id SET DEFAULT nextval('grupo_produto_id_seq');
+
 ALTER TABLE public.grupo_produto OWNER TO postgres;
 -- ddl-end --
 
@@ -80,6 +118,18 @@ CREATE TABLE public.produto(
 -- ddl-end --
 ALTER TABLE public.produto OWNER TO postgres;
 -- ddl-end --
+
+
+CREATE SEQUENCE public.produto_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1;
+
+ALTER SEQUENCE public.produto_id_seq
+    OWNER TO postgres;
+
+ALTER TABLE public.produto
+    ALTER COLUMN id SET DEFAULT nextval('produto_id_seq');
 
 -- object: marca_fk | type: CONSTRAINT --
 -- ALTER TABLE public.produto DROP CONSTRAINT IF EXISTS marca_fk CASCADE;

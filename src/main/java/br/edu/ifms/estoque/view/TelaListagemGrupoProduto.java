@@ -70,15 +70,15 @@ public class TelaListagemGrupoProduto extends JFrame {
 
     private void atualizarTabela() {
         modelo.atualizaTabela();
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
     }
 
     private void criarTabela() {
         modelo = new GrupoProdutoResultSetTableModel();
         tabela = new JTable(modelo);
         tabela.setSize(640, 480);
-        tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
-        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
-        tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
 
         barraRolagem = new JScrollPane(tabela);
 

@@ -21,13 +21,13 @@ public class Conexao {
     private static Conexao conexao;
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("EstoqueDB");
     
-    public static EntityManager createEntityManager() {
-        return emf.createEntityManager();
+    private Conexao() throws SQLException {
+        String url = "jdbc:postgresql://localhost/estoque?user=postgres&password=postgres";
+        this.conn = DriverManager.getConnection(url);
     }
     
-    private Conexao() throws SQLException {
-        String url = "jdbc:postgresql://localhost/estoque?user=postgres&password=ifms";
-        this.conn = DriverManager.getConnection(url);
+    public static EntityManager createEntityManager() {
+        return emf.createEntityManager();
     }
     
     public static Conexao getInstance() throws SQLException {

@@ -5,7 +5,10 @@
 package br.edu.ifms.estoque.model;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import javax.persistence.Column;
+=======
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +16,7 @@ import javax.persistence.Id;
 
 /**
  *
+<<<<<<< HEAD
  * @author santos
  */
 @Entity
@@ -23,10 +27,22 @@ public class Cliente implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+=======
+ * @author professor
+ */
+@Entity
+public class Cliente implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
     private String nome;
     private String telefone;
     private String email;
     private String cpf;
+<<<<<<< HEAD
     private String endereco;
     
     public Cliente() {
@@ -36,6 +52,8 @@ public class Cliente implements Serializable {
     public Boolean isSetId() {
         return id != null;
     }
+=======
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
 
     public Long getId() {
         return id;
@@ -76,6 +94,7 @@ public class Cliente implements Serializable {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+<<<<<<< HEAD
 
     public String getEndereco() {
         return endereco;
@@ -84,4 +103,6 @@ public class Cliente implements Serializable {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
+=======
+>>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
 }

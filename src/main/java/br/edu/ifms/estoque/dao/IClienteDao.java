@@ -11,9 +11,6 @@ import java.util.List;
  *
  * @author santos
  */
-public interface IClienteDao extends IDao<Cliente> {
- 
-    Cliente buscarPorId(Long id);
-    List<Cliente> buscarPorNome(String nome);
-    
+public interface IClienteDao {
+    public List<Cliente> buscarPorNome(String nome);
 }
