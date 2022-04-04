@@ -4,19 +4,16 @@
  */
 package br.edu.ifms.estoque.dao;
 
+import br.edu.ifms.estoque.model.Cliente;
 import java.util.List;
 
 /**
  *
- * @author nicholas.santos
+ * @author santos
  */
-public interface IDao<T> {
-
-    public T inserir(T object);
-
-    public T alterar(T object);
-
-    public void excluir(Object object);
-
-    public List<T> listar();
+public interface IClienteDao extends IDao<Cliente> {
+ 
+    Cliente buscarPorId(Long id);
+    List<Cliente> buscarPorNome(String nome);
+    
 }

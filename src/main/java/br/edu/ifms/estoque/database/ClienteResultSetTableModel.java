@@ -4,10 +4,9 @@
  */
 package br.edu.ifms.estoque.database;
 
-import br.edu.ifms.estoque.model.GrupoProduto;
-import br.edu.ifms.estoque.queries.GrupoProdutoQueries;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import br.edu.ifms.estoque.dao.ClienteDao;
+import br.edu.ifms.estoque.dao.IClienteDao;
+import br.edu.ifms.estoque.model.Cliente;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -15,20 +14,24 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author santos
  */
-public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
+public class ClienteResultSetTableModel extends AbstractTableModel {
 
-    private GrupoProdutoQueries queries;
-    private List<GrupoProduto> lista;
-    private String[] colunas = {"Id", "Nome", "Subgrupo"};
+    private IClienteDao queries;
+    private List<Cliente> lista;
+    private String[] colunas = {"Id", "Nome", "Telefone", "E-mail"};
 
-    public GrupoProdutoResultSetTableModel() {
-        queries = new GrupoProdutoQueries();
-        lista = queries.getAllGrupos();
+    public ClienteResultSetTableModel() {
+        queries = new ClienteDao();
+        lista = queries.listar();
     }
 
-    public void atualizaTabela() {
+    public void atualizaTabela(String nome) {
         lista.clear();
-        lista.addAll(queries.getAllGrupos());
+        if (nome != null && !nome.isBlank() && !nome.isEmpty()) {
+            lista.addAll(queries.buscarPorNome(nome));
+        } else {
+            lista.addAll(queries.listar());
+        }
         // informa que uma nova consulta foi gerada, portanto deve atualizar os dados
         fireTableStructureChanged();
     }
@@ -46,27 +49,35 @@ public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        GrupoProduto gp = lista.get(row);
-        switch(col) {
-            case 0: return gp.getId();
-            case 1: return gp.getNome();
-            case 2: return gp.getSubgrupo() != null ? gp.getSubgrupo().getNome() : "";
+        Cliente obj = lista.get(row);
+        switch (col) {
+            case 0:
+                return obj.getId();
+            case 1:
+                return obj.getNome();
+            case 2:
+                return obj.getTelefone();
+            case 3:
+                return obj.getEmail();
         }
         return "";
     }
 
     /**
      * Retorna a classe que representa a coluna informada
-     * 
+     *
      * @param columnIndex
-     * @return 
+     * @return
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch(columnIndex) {
-            case 0: return Integer.class;
+        switch (columnIndex) {
+            case 0:
+                return Long.class;
             case 1:
-            case 2: return String.class;
+            case 2:
+            case 3:
+                return String.class;
         }
         // se ocorrer falhar, retorna o padrão Object
         return Object.class;
@@ -75,10 +86,6 @@ public class GrupoProdutoResultSetTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return colunas[column];
-    }
-    
-    public void disconnect() {
-        queries.close();
     }
 
 }

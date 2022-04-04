@@ -4,14 +4,28 @@
  */
 package br.edu.ifms.estoque.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author santos
  */
-public class Produto {
+@Entity
+@Table(name = "produto")
+public class Produto implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     private String nome;
     private String descricao;
@@ -19,6 +33,15 @@ public class Produto {
     private BigDecimal estoque;
     private BigDecimal estoqueMinimo;
     private LocalDateTime dataUltimaCompra;
+    
+    @ManyToOne
+    private GrupoProduto grupo;
+    
+    @ManyToOne
+    private Marca marca;
+    
+    @ManyToOne
+    private UnidadeMedida unidadeMedida;
 
     public Produto() {
     }
@@ -87,6 +110,30 @@ public class Produto {
 
     public void setDataUltimaCompra(LocalDateTime dataUltimaCompra) {
         this.dataUltimaCompra = dataUltimaCompra;
+    }
+
+    public GrupoProduto getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(GrupoProduto grupo) {
+        this.grupo = grupo;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public UnidadeMedida getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
     }
     
 }

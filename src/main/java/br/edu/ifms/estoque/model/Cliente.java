@@ -10,30 +10,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  *
  * @author santos
  */
 @Entity
-@Table(name = "unidade_medida")
-public class UnidadeMedida implements Serializable {
+public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    
-    @Column
+
     private String nome;
-
-    public UnidadeMedida() {
+    private String telefone;
+    private String email;
+    private String cpf;
+    private String endereco;
+    
+    public Cliente() {
+        
     }
-
-    public UnidadeMedida(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
+    
+    public Boolean isSetId() {
+        return id != null;
     }
 
     public Long getId() {
@@ -52,4 +53,35 @@ public class UnidadeMedida implements Serializable {
         this.nome = nome;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 }

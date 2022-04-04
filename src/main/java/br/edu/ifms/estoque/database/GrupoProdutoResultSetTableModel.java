@@ -6,8 +6,6 @@ package br.edu.ifms.estoque.database;
 
 import br.edu.ifms.estoque.model.GrupoProduto;
 import br.edu.ifms.estoque.queries.GrupoProdutoQueries;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
