@@ -52,4 +52,17 @@ public class Conexao {
         return conn.isClosed();
     }
     
+    public static void main(String[] args) {
+        try {
+            Conexao c = Conexao.getInstance();
+            if (!c.isClosed()) {
+                System.out.println("Conexão realizada com sucesso");
+            }
+            c.close();
+            System.out.println("Fechamento realizado com sucesso");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
 }

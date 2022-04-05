@@ -5,28 +5,12 @@
  */
 package br.edu.ifms.estoque.model;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  *
  * @author santos
  */
-@Entity
-@Table(name = "marca")
-public class Marca implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, nullable = false)
+public class Marca {
     private Long id;
-    
-    @Column
     private String nome;
 
     public Marca() {

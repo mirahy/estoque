@@ -9,9 +9,10 @@ import java.util.List;
 
 /**
  *
- * @author santos
+ * @author professor
  */
 public interface IClienteDao extends IDao<Cliente> {
-    
+ 
     List<Cliente> buscarPorNome(String nome);
+    
 }

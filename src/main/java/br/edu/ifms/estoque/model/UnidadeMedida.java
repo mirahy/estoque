@@ -4,28 +4,12 @@
  */
 package br.edu.ifms.estoque.model;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  *
  * @author santos
  */
-@Entity
-@Table(name = "unidade_medida")
-public class UnidadeMedida implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, nullable = false)
+public class UnidadeMedida {
     private Long id;
-    
-    @Column
     private String nome;
     private Boolean fracionado;
 
@@ -54,8 +38,6 @@ public class UnidadeMedida implements Serializable {
         this.nome = nome;
     }
 
-<<<<<<< HEAD
-=======
     public Boolean getFracionado() {
         return fracionado;
     }
@@ -68,5 +50,4 @@ public class UnidadeMedida implements Serializable {
         return this.fracionado;
     }
     
->>>>>>> 245f21c7f8360abe5cb99d82c446b8f18786d626
 }

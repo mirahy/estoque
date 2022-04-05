@@ -13,7 +13,7 @@ import org.hibernate.HibernateException;
 
 /**
  *
- * @author santos
+ * @author professor
  */
 public class ClienteDao implements IClienteDao {
 
@@ -21,15 +21,6 @@ public class ClienteDao implements IClienteDao {
 
     private EntityManager getEntityManager() {
         return Conexao.createEntityManager();
-    }
-
-    @Override
-    public Cliente buscarPorId(Object object) {
-        EntityManager em = getEntityManager();
-        Long id = (Long) object;
-        Cliente cliente = em.find(Cliente.class, id);
-        em.close();
-        return cliente;
     }
 
     @Override
@@ -49,7 +40,6 @@ public class ClienteDao implements IClienteDao {
             clientes = query.getResultList();
         }
         em.close();
-        
         return clientes;
     }
 
@@ -99,6 +89,15 @@ public class ClienteDao implements IClienteDao {
     @Override
     public List<Cliente> listar() {
         return buscarPorNome(null);
+    }
+
+    @Override
+    public Cliente buscarPorId(Object object) {
+        EntityManager em = getEntityManager();
+        Long id = (Long) object;
+        Cliente cliente = em.find(Cliente.class, id);
+        em.close();
+        return cliente;
     }
 
 }
