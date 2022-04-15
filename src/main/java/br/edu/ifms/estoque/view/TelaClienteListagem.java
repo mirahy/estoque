@@ -7,6 +7,7 @@ package br.edu.ifms.estoque.view;
 
 import br.edu.ifms.estoque.database.ClienteHibernateTableModel;
 import br.edu.ifms.estoque.facade.ClienteFacade;
+import br.edu.ifms.estoque.mediator.MediatorListButton;
 
 /**
  *
@@ -16,6 +17,7 @@ public class TelaClienteListagem extends javax.swing.JFrame {
     
     private ClienteHibernateTableModel model;
     private ClienteFacade facade;
+    private MediatorListButton mediator;
 
     /** Creates new form TelaClienteListagem */
     public TelaClienteListagem() {
@@ -23,7 +25,13 @@ public class TelaClienteListagem extends javax.swing.JFrame {
         facade = new ClienteFacade();
         initComponents();
         
-        refresh();
+        mediator = new MediatorListButton();
+        mediator.registerModel(model);
+        mediator.registerField(txtNome);
+        mediator.registerAlterar(btAlterar);
+        mediator.registerExcluir(btExcluir);
+        
+        mediator.buscar();
     }
     
     private void refresh() {
@@ -82,6 +90,11 @@ public class TelaClienteListagem extends javax.swing.JFrame {
 
         btBuscar.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
 
         btCadastrar.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         btCadastrar.setText("Cadastrar Cliente");
@@ -190,13 +203,13 @@ public class TelaClienteListagem extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
+        mediator.cadastrar();
         TelaFormCliente form = facade.abrirFormulario(this, facade);
         form.setVisible(true);
-        refresh();
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        refresh();
+        mediator.selecionar();
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
@@ -205,18 +218,20 @@ public class TelaClienteListagem extends javax.swing.JFrame {
         TelaFormCliente form = facade.editarFormulario(this, facade, id);
         form.setVisible(true);
         
-        model.refresh(null);
-        refresh();
+        mediator.buscar();
     }//GEN-LAST:event_btAlterarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         int row = tabela.getSelectedRow();
         Long id = (Long) model.getValueAt(row, 0);
         facade.excluir(this, id);
-        
-        model.refresh(null);
-        refresh();
+        mediator.buscar();
     }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        // TODO add your handling code here:
+        mediator.buscar();
+    }//GEN-LAST:event_btBuscarActionPerformed
 
     /**
      * @param args the command line arguments
