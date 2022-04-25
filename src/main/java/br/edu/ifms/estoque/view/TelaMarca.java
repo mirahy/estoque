@@ -5,10 +5,7 @@
  */
 package br.edu.ifms.estoque.view;
 
-import br.edu.ifms.estoque.dao.IMarcaDao;
-import br.edu.ifms.estoque.factory.MarcaDaoFactory;
-import br.edu.ifms.estoque.model.Marca;
-import br.edu.ifms.estoque.queries.MarcaQueries;
+import br.edu.ifms.estoque.facade.MarcaFacade;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
@@ -30,43 +27,42 @@ import javax.swing.JTextField;
  */
 public class TelaMarca extends JDialog {
 
+    private MarcaFacade facade;
+
     private JTextField campoId;
     private JTextField campoNomeMarca;
     private JButton botaoSalvar;
     private JButton botaoFechar;
-    private Marca marca;
-    private IMarcaDao dao;
 
-    public TelaMarca(Frame telaPai) {
-        super(telaPai);
+    public TelaMarca(Frame telaPai, boolean modal, MarcaFacade facade) {
+        super(telaPai, modal);
+        this.facade = facade;
+
         setLayout(new BorderLayout(10, 10));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(400, 200);
         setLocationRelativeTo(null);
         setModal(true);
-        this.marca = new Marca();
-        MarcaDaoFactory factory = new MarcaDaoFactory();
-        this.dao = (IMarcaDao) factory.createObject();
 
         initComponents();
     }
-    
+
     private void initComponents() {
         Font font = new Font("Times", Font.PLAIN, 20);
         JLabel titulo = new JLabel("Formulário de Cadastro/Alteração");
         titulo.setFont(font);
         titulo.setHorizontalAlignment(JLabel.CENTER);
-        
+
         add(titulo, BorderLayout.PAGE_START);
         add(criaPainelCampos(), BorderLayout.CENTER);
         add(criaPainelBotoes(), BorderLayout.PAGE_END);
         add(Box.createHorizontalGlue(), BorderLayout.LINE_START);
         add(Box.createHorizontalGlue(), BorderLayout.LINE_END);
     }
-    
+
     private JPanel criaPainelCampos() {
         JLabel lblId = new JLabel("Id.: ");
-        lblId.setAlignmentX(Component.LEFT_ALIGNMENT);        
+        lblId.setAlignmentX(Component.LEFT_ALIGNMENT);
         campoId = new JTextField(5);
         campoId.setEditable(false);
 
@@ -75,17 +71,17 @@ public class TelaMarca extends JDialog {
         campoNomeMarca = new JTextField(20);
         campoNomeMarca.setFocusable(true);
         campoNomeMarca.requestFocusInWindow();
-        
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(lblId);
         panel.add(campoId);
         panel.add(lblNome);
         panel.add(campoNomeMarca);
-        
+
         return panel;
     }
-    
+
     private JPanel criaPainelBotoes() {
         ActionHandler handler = new ActionHandler();
         botaoSalvar = new JButton("Salvar");
@@ -93,7 +89,7 @@ public class TelaMarca extends JDialog {
 
         botaoFechar = new JButton("Fechar");
         botaoFechar.addActionListener(handler);
-        
+
         JPanel panel = new JPanel();
         panel.add(botaoSalvar);
         panel.add(botaoFechar);
@@ -115,14 +111,8 @@ public class TelaMarca extends JDialog {
         return true;
     }
 
-    public Marca getMarca() {
-        return this.marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-        campoId.setText(marca.getId().toString());
-        campoNomeMarca.setText(marca.getNome());
+    public void setId(Long id) {
+        facade.carregarDados(id, campoId, campoNomeMarca);
     }
 
     private class ActionHandler implements ActionListener {
@@ -131,19 +121,14 @@ public class TelaMarca extends JDialog {
         public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == botaoSalvar) {
                 if (validarCampos()) {
-                    String sId = campoId.getText();
-                    Boolean contemNumero = sId.matches("\\d+");
-                    marca.setId(contemNumero ? Long.parseLong(sId) : null);
-                    marca.setNome(campoNomeMarca.getText());
-                    if (contemNumero) {
-                        dao.alterar(marca);
-                    } else {
-                        dao.inserir(marca);
+                    if (JOptionPane.showConfirmDialog(TelaMarca.this, "Deseja salvar esses dados?",
+                            "Salvar", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                        facade.salvar(campoId, campoNomeMarca);
+                        JOptionPane.showMessageDialog(TelaMarca.this, "Dados salvos com sucesso!",
+                                "Informação", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
                     }
-                    limpar();
-
-                    JOptionPane.showMessageDialog(TelaMarca.this, "Dados salvos com sucesso!",
-                            "Informação", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 }
             } else if (ae.getSource() == botaoFechar) {

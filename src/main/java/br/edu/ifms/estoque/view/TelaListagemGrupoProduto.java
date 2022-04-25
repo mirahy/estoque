@@ -36,7 +36,7 @@ public class TelaListagemGrupoProduto extends JFrame {
     private JButton btEditar;
     private JButton btFechar;
     private GrupoProdutoResultSetTableModel modelo;
-    private GrupoProdutoQueries queries;
+    private IGrupoProdutoDao queries;
 
     public TelaListagemGrupoProduto() {
         super("Listagem de Grupos de Produtos");

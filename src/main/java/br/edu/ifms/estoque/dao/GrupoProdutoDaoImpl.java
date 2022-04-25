@@ -6,6 +6,7 @@ package br.edu.ifms.estoque.dao;
 
 import br.edu.ifms.estoque.database.Conexao;
 import br.edu.ifms.estoque.model.Cliente;
+import br.edu.ifms.estoque.model.Marca;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,38 +14,39 @@ import org.hibernate.HibernateException;
 
 /**
  *
- * @author professor
+ * @author nicholas.santos
  */
-public class ClienteDao implements IClienteDao {
+public class GrupoProdutoDaoImpl implements IMarcaDao {
 
-    private static final String JPQL = "SELECT c FROM Cliente c";
+    private static final String JPQL = "SELECT m FROM Marca m";
 
+    
     private EntityManager getEntityManager() {
         return Conexao.createEntityManager();
     }
 
     @Override
-    public List<Cliente> buscarPorNome(String nome) {
+    public List<Marca> buscarPorNome(String nome) {
         EntityManager em = getEntityManager();
         String condicao = "";
-        List<Cliente> clientes = null;
+        List<Marca> marcas = null;
         Boolean hasNome = nome != null && !nome.isBlank() && !nome.isEmpty();
         if (hasNome) {
-            condicao = " WHERE c.nome LIKE ?1 ";
+            condicao = " WHERE m.nome LIKE ?1 ";
         }
         Query query = em.createQuery(JPQL + condicao);
         if (hasNome) {
-            clientes = query.setParameter(1, "%" + nome + "%")
+            marcas = query.setParameter(1, "%" + nome + "%")
                     .getResultList();
         } else {
-            clientes = query.getResultList();
+            marcas = query.getResultList();
         }
         em.close();
-        return clientes;
+        return marcas;
     }
 
     @Override
-    public Cliente inserir(Cliente object) {
+    public Marca inserir(Marca object) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -58,7 +60,7 @@ public class ClienteDao implements IClienteDao {
     }
 
     @Override
-    public Cliente alterar(Cliente object) {
+    public Marca alterar(Marca object) {
         EntityManager em = getEntityManager();
         em.detach(object);
         try {
@@ -87,15 +89,15 @@ public class ClienteDao implements IClienteDao {
     }
 
     @Override
-    public List<Cliente> listar() {
+    public List listar() {
         return buscarPorNome(null);
     }
 
     @Override
-    public Cliente buscarPorId(Object object) {
+    public Marca buscarPorId(Object object) {
         EntityManager em = getEntityManager();
         Long id = (Long) object;
-        Cliente obj = em.find(Cliente.class, id);
+        Marca obj = em.find(Marca.class, id);
         em.close();
         return obj;
     }

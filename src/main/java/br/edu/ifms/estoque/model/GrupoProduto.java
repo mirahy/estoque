@@ -5,14 +5,25 @@
 package br.edu.ifms.estoque.model;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author santos
  */
+@Entity
 public class GrupoProduto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     private GrupoProduto subgrupo;
 
     public GrupoProduto() {

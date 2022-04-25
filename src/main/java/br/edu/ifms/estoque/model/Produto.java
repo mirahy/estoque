@@ -4,26 +4,48 @@
  */
 package br.edu.ifms.estoque.model;
 
+import br.edu.ifms.estoque.converter.LocalDateTimeAttributeConverter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author santos
  */
+@Entity
 public class Produto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     private String nome;
     private String descricao;
     private BigDecimal preco;
     private BigDecimal estoque;
     private BigDecimal estoqueMinimo;
+    
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime dataUltimaCompra;
+    
+    @ManyToOne
     private GrupoProduto grupoProduto;
+    
+    @ManyToOne
     private Marca marca;
+    
+    @ManyToOne
     private UnidadeMedida unidadeMedida;
 
     public Produto() {
+        grupoProduto = new GrupoProduto();
+        marca = new Marca();
+        unidadeMedida = new UnidadeMedida();
     }
 
     public Produto(Long id, String nome, String descricao, BigDecimal preco, 

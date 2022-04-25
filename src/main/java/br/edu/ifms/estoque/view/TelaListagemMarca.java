@@ -5,11 +5,10 @@
  */
 package br.edu.ifms.estoque.view;
 
-import br.edu.ifms.estoque.dao.IMarcaDao;
-import br.edu.ifms.estoque.database.MarcaResultSetTableModel;
-import br.edu.ifms.estoque.factory.MarcaDaoFactory;
+import br.edu.ifms.estoque.database.MarcaHibernateTableModel;
+import br.edu.ifms.estoque.facade.MarcaFacade;
+import br.edu.ifms.estoque.mediator.MediatorMarcaButton;
 import br.edu.ifms.estoque.model.Marca;
-import br.edu.ifms.estoque.queries.MarcaQueries;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -37,17 +36,27 @@ public class TelaListagemMarca extends JFrame {
     private JButton btExcluir;
     private JButton btEditar;
     private JButton btFechar;
-    private MarcaResultSetTableModel modelo;
-    private IMarcaDao dao;
+    
+    private MarcaHibernateTableModel model;
+    
+    private MediatorMarcaButton mediator;
+    private MarcaFacade facade;
 
     public TelaListagemMarca() {
         super("Listagem de Marcas");
-        MarcaDaoFactory factory = new MarcaDaoFactory();
-        dao = (IMarcaDao) factory.createObject();
+        
+        model = new MarcaHibernateTableModel();
+        facade = new MarcaFacade();
 
         criarBotoes();
         criarTabela();
-        atualizarTabela();
+        
+        mediator = new MediatorMarcaButton();
+        mediator.registerAlterar(btEditar);
+        mediator.registerExcluir(btExcluir);
+        mediator.registerModel(model);
+        
+        mediator.buscar();
     }
 
     private void criarBotoes() {
@@ -73,15 +82,13 @@ public class TelaListagemMarca extends JFrame {
     }
 
     private void atualizarTabela() {
-        modelo.atualizaTabela();
+        mediator.buscar();
         tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(300);
     }
 
     private void criarTabela() {
-        modelo = new MarcaResultSetTableModel();
-
-        tabela = new JTable(modelo);
+        tabela = new JTable(model);
         tabela.setSize(640, 480);
 
         barraRolagem = new JScrollPane(tabela);
@@ -111,15 +118,6 @@ public class TelaListagemMarca extends JFrame {
         return true;
     }
 
-    private void showTelaCadastro(Marca marca) {
-        TelaMarca tela = new TelaMarca(TelaListagemMarca.this);
-        if (marca != null) {
-            tela.setMarca(marca);
-        }
-        tela.setVisible(true);
-        atualizarTabela();
-    }
-
     private class ButtonHandler implements ActionListener {
 
         @Override
@@ -128,27 +126,28 @@ public class TelaListagemMarca extends JFrame {
             if (source == btFechar) {
                 dispose();
             } else if (source == btInserir) {
-                showTelaCadastro(null);
+                TelaMarca form = facade.abrirFormulario(TelaListagemMarca.this, facade);
+                form.setVisible(true);
             } else if (source == btExcluir && isRowSelected()) {
                 int index = tabela.getSelectedRow();
-                Object obj = modelo.getValueAt(index, 0);
-                Long id = (Long) obj;
-                Marca marca = dao.buscarPorId(id);
-                dao.excluir(marca);
-                JOptionPane.showMessageDialog(TelaListagemMarca.this,
-                        "Marca excluída com sucesso!",
-                        "Excluir Marca",
-                        JOptionPane.INFORMATION_MESSAGE);
-                atualizarTabela();
+                Long id = (Long) model.getValueAt(index, 0);
+                facade.excluir(TelaListagemMarca.this, id);
             } else if (source == btEditar && isRowSelected()) {
                 int index = tabela.getSelectedRow();
-                Object obj = modelo.getValueAt(index, 0);
-                Long id = (Long) obj;
-                Marca marca = dao.buscarPorId(id);
-                
-                showTelaCadastro(marca);
+                Long id = (Long) model.getValueAt(index, 0);
+                TelaMarca form = facade.editarFormulario(TelaListagemMarca.this, facade, id);
+                form.setVisible(true);
             }
+            mediator.buscar();
         }
 
+    }
+    
+    public static void main(String[] args) {
+        TelaListagemMarca tela = new TelaListagemMarca();
+        tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        tela.setSize(400, 500);
+        tela.setLocationRelativeTo(null);
+        tela.setVisible(true);
     }
 }

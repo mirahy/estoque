@@ -4,33 +4,30 @@
  */
 package br.edu.ifms.estoque.database;
 
+import br.edu.ifms.estoque.dao.MarcaDaoImpl;
 import br.edu.ifms.estoque.dao.IMarcaDao;
-import br.edu.ifms.estoque.factory.MarcaDaoFactory;
 import br.edu.ifms.estoque.model.Marca;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author 1513003
+ * @author professor
  */
-public class MarcaResultSetTableModel extends AbstractTableModel {
+public class MarcaHibernateTableModel extends AbstractTableModel {
     
     private IMarcaDao dao;
-    private List<Marca> lista = new ArrayList();
+    private List<Marca> lista;
     private String[] colunas = {"Id", "Nome"};
-
-    public MarcaResultSetTableModel() {
-        MarcaDaoFactory factory = new MarcaDaoFactory();
-        dao = (IMarcaDao) factory.createObject();
+    
+    public MarcaHibernateTableModel() {
+        dao = new MarcaDaoImpl();
         lista = dao.listar();
     }
-
+    
     public void refresh(String nome) {
         lista.clear();
         lista.addAll(dao.buscarPorNome(nome));
-        // informa que uma nova consulta foi gerada, portanto deve atualizar os dados
         fireTableStructureChanged();
     }
 
@@ -41,39 +38,34 @@ public class MarcaResultSetTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        // retorna 0 em caso de falha
         return colunas.length;
     }
 
     @Override
     public Object getValueAt(int row, int col) {
         Marca obj = lista.get(row);
-        switch(col) {
+        switch (col) {
             case 0: return obj.getId();
             case 1: return obj.getNome();
+            default:
+                return "";
         }
-        return "";
     }
 
-    /**
-     * Retorna a classe que representa a coluna informada
-     * 
-     * @param columnIndex
-     * @return 
-     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch(columnIndex) {
-            case 0: return Integer.class;
-            case 1: return String.class;
+        
+        if (columnIndex == 0) {
+            return Long.class;
         }
-        // se ocorrer falhar, retorna o padrão Object
-        return Object.class;
+        return String.class;
     }
 
     @Override
     public String getColumnName(int column) {
         return colunas[column];
     }
+    
+    
     
 }

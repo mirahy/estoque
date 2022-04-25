@@ -4,13 +4,14 @@
  */
 package br.edu.ifms.estoque.dao;
 
-import br.edu.ifms.estoque.model.Cliente;
+import br.edu.ifms.estoque.model.Marca;
 import java.util.List;
 
 /**
  *
- * @author professor
+ * @author nicholas.santos
  */
-public interface IClienteDao extends IBaseDao<Cliente> {
-    
+public interface IGrupoProdutoDao extends IDao<Marca> {
+
+    public List<Marca> buscarPorNome(String nome);
 }

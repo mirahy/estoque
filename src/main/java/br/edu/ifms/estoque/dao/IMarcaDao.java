@@ -5,15 +5,10 @@
 package br.edu.ifms.estoque.dao;
 
 import br.edu.ifms.estoque.model.Marca;
-import java.util.List;
 
 /**
  *
  * @author nicholas.santos
  */
-public interface IMarcaDao extends IDao {
-
-    public Marca buscarPorId(Long id);
-
-    public List buscarPorNome(String nome);
+public interface IMarcaDao extends IBaseDao<Marca> {
 }
