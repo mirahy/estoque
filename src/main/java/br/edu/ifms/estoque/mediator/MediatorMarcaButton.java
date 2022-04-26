@@ -4,10 +4,8 @@
  */
 package br.edu.ifms.estoque.mediator;
 
-import br.edu.ifms.estoque.database.ClienteHibernateTableModel;
 import br.edu.ifms.estoque.database.MarcaHibernateTableModel;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 
 /**
  *

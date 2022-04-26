@@ -5,10 +5,13 @@
  */
 package br.edu.ifms.estoque.view;
 
+import br.edu.ifms.estoque.CoR.IMarcaCoR;
+import br.edu.ifms.estoque.CoR.MarcaEditarAction;
+import br.edu.ifms.estoque.CoR.MarcaInserirAction;
 import br.edu.ifms.estoque.database.MarcaHibernateTableModel;
 import br.edu.ifms.estoque.facade.MarcaFacade;
+import br.edu.ifms.estoque.mediator.MediatorMarcaAction;
 import br.edu.ifms.estoque.mediator.MediatorMarcaButton;
-import br.edu.ifms.estoque.model.Marca;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -120,24 +123,46 @@ public class TelaListagemMarca extends JFrame {
 
     private class ButtonHandler implements ActionListener {
 
+        private MarcaInserirAction marcaInserirAction;
+        private MarcaEditarAction marcaEditarAction;
+        private IMarcaCoR marcaExcluirAction;
+        private IMarcaCoR marcaFecharAction;
+        
+        private MediatorMarcaAction medidatorAction;
+        
+        public ButtonHandler() {
+            this.medidatorAction = new MediatorMarcaAction(facade, 
+                    TelaListagemMarca.this);
+            this.medidatorAction.registerButtonEditar(btEditar);
+            this.medidatorAction.registerButtonInserir(btInserir);
+            this.medidatorAction.registerModel(model);
+            this.medidatorAction.registerTabela(tabela);
+            
+            marcaEditarAction = new MarcaEditarAction(medidatorAction);
+            marcaInserirAction = new MarcaInserirAction(medidatorAction);
+            marcaInserirAction.setProximo(marcaEditarAction);
+        }
+        
         @Override
         public void actionPerformed(ActionEvent ae) {
             Object source = ae.getSource();
-            if (source == btFechar) {
-                dispose();
-            } else if (source == btInserir) {
-                TelaMarca form = facade.abrirFormulario(TelaListagemMarca.this, facade);
-                form.setVisible(true);
-            } else if (source == btExcluir && isRowSelected()) {
-                int index = tabela.getSelectedRow();
-                Long id = (Long) model.getValueAt(index, 0);
-                facade.excluir(TelaListagemMarca.this, id);
-            } else if (source == btEditar && isRowSelected()) {
-                int index = tabela.getSelectedRow();
-                Long id = (Long) model.getValueAt(index, 0);
-                TelaMarca form = facade.editarFormulario(TelaListagemMarca.this, facade, id);
-                form.setVisible(true);
-            }
+            marcaInserirAction.executar(source);
+            
+//            if (source == btFechar) {
+//                dispose();
+//            } else if (source == btInserir) {
+//                TelaMarca form = facade.abrirFormulario(TelaListagemMarca.this, facade);
+//                form.setVisible(true);
+//            } else if (source == btExcluir && isRowSelected()) {
+//                int index = tabela.getSelectedRow();
+//                Long id = (Long) model.getValueAt(index, 0);
+//                facade.excluir(TelaListagemMarca.this, id);
+//            } else if (source == btEditar && isRowSelected()) {
+//                int index = tabela.getSelectedRow();
+//                Long id = (Long) model.getValueAt(index, 0);
+//                TelaMarca form = facade.editarFormulario(TelaListagemMarca.this, facade, id);
+//                form.setVisible(true);
+//            }
             mediator.buscar();
         }
 
