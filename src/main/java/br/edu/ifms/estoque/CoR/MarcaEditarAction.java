@@ -5,9 +5,6 @@
 package br.edu.ifms.estoque.CoR;
 
 import br.edu.ifms.estoque.mediator.MediatorMarcaAction;
-import br.edu.ifms.estoque.view.TelaListagemMarca;
-import br.edu.ifms.estoque.view.TelaMarca;
-import javax.swing.JButton;
 
 /**
  *
@@ -16,7 +13,7 @@ import javax.swing.JButton;
 public class MarcaEditarAction implements IMarcaCoR {
 
     private IMarcaCoR proximo;
-    private MediatorMarcaAction mediator;
+    private final MediatorMarcaAction mediator;
     
     public MarcaEditarAction(MediatorMarcaAction mediator) {
         this.mediator = mediator;

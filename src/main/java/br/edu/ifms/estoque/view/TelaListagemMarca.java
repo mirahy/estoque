@@ -5,8 +5,9 @@
  */
 package br.edu.ifms.estoque.view;
 
-import br.edu.ifms.estoque.CoR.IMarcaCoR;
 import br.edu.ifms.estoque.CoR.MarcaEditarAction;
+import br.edu.ifms.estoque.CoR.MarcaExcluirAction;
+import br.edu.ifms.estoque.CoR.MarcaFecharAction;
 import br.edu.ifms.estoque.CoR.MarcaInserirAction;
 import br.edu.ifms.estoque.database.MarcaHibernateTableModel;
 import br.edu.ifms.estoque.facade.MarcaFacade;
@@ -125,8 +126,8 @@ public class TelaListagemMarca extends JFrame {
 
         private MarcaInserirAction marcaInserirAction;
         private MarcaEditarAction marcaEditarAction;
-        private IMarcaCoR marcaExcluirAction;
-        private IMarcaCoR marcaFecharAction;
+        private MarcaExcluirAction marcaExcluirAction;
+        private MarcaFecharAction marcaFecharAction;
         
         private MediatorMarcaAction medidatorAction;
         
@@ -135,11 +136,15 @@ public class TelaListagemMarca extends JFrame {
                     TelaListagemMarca.this);
             this.medidatorAction.registerButtonEditar(btEditar);
             this.medidatorAction.registerButtonInserir(btInserir);
+            this.medidatorAction.registerButtonExcluir(btExcluir);
+            this.medidatorAction.registerButtonFechar(btFechar);
             this.medidatorAction.registerModel(model);
             this.medidatorAction.registerTabela(tabela);
             
             marcaEditarAction = new MarcaEditarAction(medidatorAction);
             marcaInserirAction = new MarcaInserirAction(medidatorAction);
+            marcaExcluirAction = new MarcaExcluirAction(medidatorAction);
+            marcaFecharAction = new MarcaFecharAction(medidatorAction);
             marcaInserirAction.setProximo(marcaEditarAction);
         }
         

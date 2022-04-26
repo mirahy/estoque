@@ -8,22 +8,21 @@ import br.edu.ifms.estoque.mediator.MediatorMarcaAction;
 
 /**
  *
- * @author santos
+ * @author aluno
  */
-public class MarcaInserirAction implements
-        IMarcaCoR {
+public class MarcaExcluirAction implements IMarcaCoR{
+    
     private IMarcaCoR proximo;
-    
     private final MediatorMarcaAction mediator;
-    
-    public MarcaInserirAction(MediatorMarcaAction mediator) {
+
+    public MarcaExcluirAction( MediatorMarcaAction mediator) {
         this.mediator = mediator;
-    }
+    } 
     
     @Override
     public void executar(Object source) {
-        if (mediator.isButtonInserir(source)) {
-            mediator.inserir();
+        if (mediator.isButtonExcluir(source) && mediator.isRowSelected()) {
+            mediator.excluir();
         } else {
             this.proximo.executar(source);
         }
@@ -33,5 +32,5 @@ public class MarcaInserirAction implements
     public void setProximo(IMarcaCoR cor) {
         this.proximo = cor;
     }
-
+    
 }
