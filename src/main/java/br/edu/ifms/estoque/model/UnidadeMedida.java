@@ -31,6 +31,12 @@ public class UnidadeMedida {
         this.fracionado = fracionado;
     }
 
+    public UnidadeMedida(UnidadeMedidaDiretor diretor) {
+        id = diretor.id;
+        nome = diretor.nome;
+        fracionado = diretor.fracionado;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,6 +63,32 @@ public class UnidadeMedida {
     
     public Boolean isFracionado() {
         return this.fracionado;
+    }
+    
+    public static class UnidadeMedidaDiretor{
+        private Long id;
+        private String nome;
+        private Boolean fracionado;
+        
+        public UnidadeMedidaDiretor wihtId(Long id){
+            this.id = id;
+            return this;
+        }
+        
+        public UnidadeMedidaDiretor wihtNome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        
+        public UnidadeMedidaDiretor wiht(Boolean fracionado){
+            this.fracionado = fracionado;
+            return this;
+            
+        }
+        
+        public UnidadeMedida construir(){
+            return new UnidadeMedida(this);
+        }
     }
     
 }

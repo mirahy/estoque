@@ -76,12 +76,13 @@ public class ClienteFacade {
         boolean isId = txtId.getText().matches("\\d+");
         Long id = isId ? Long.parseLong(txtId.getText()) : null;
 
-        Cliente cliente = new Cliente();
-        cliente.setId(id);
-        cliente.setNome(txtNome.getText());
-        cliente.setTelefone(txtTelefone.getText());
-        cliente.setEmail(txtEmail.getText());
-        cliente.setCpf(txtCpf.getText());
+        Cliente cliente = new Cliente.ClienteDiretor()
+                .wihtId(id)
+                .wihtNome(txtNome.getText())
+                .wihtTelefone(txtTelefone.getText())
+                .wihtEmail(txtEmail.getText())
+                .wihtCpf(txtCpf.getText())
+                .construir();
 
         if (!isId) {
             dao.inserir(cliente);

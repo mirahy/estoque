@@ -29,10 +29,10 @@ public class GrupoProduto {
     public GrupoProduto() {
     }
 
-    public GrupoProduto(Long id, String nome, GrupoProduto subgrupo) {
-        this.id = id;
-        this.nome = nome;
-        this.subgrupo = subgrupo;
+    public GrupoProduto(GrupoProdutoDiretor diretor) {
+        id = diretor.id;
+        nome = diretor.nome;
+        subgrupo = diretor.subgrupo;
     }
 
     public Long getId() {
@@ -97,5 +97,30 @@ public class GrupoProduto {
             return false;
         }
         return true;
+    }
+    
+    public static class GrupoProdutoDiretor{
+        private Long id;
+        private String nome;
+        private GrupoProduto subgrupo;
+        
+        public GrupoProdutoDiretor wihtId(Long id){
+            this.id = id;
+            return this;
+        }
+        
+        public GrupoProdutoDiretor wihtNome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        
+        public GrupoProdutoDiretor wihtGrupoProduto(GrupoProduto subgrupo){
+            this.subgrupo = subgrupo;
+            return this;
+        }
+        
+        public GrupoProduto contruir(){
+            return new GrupoProduto(this);
+        }
     }
 }

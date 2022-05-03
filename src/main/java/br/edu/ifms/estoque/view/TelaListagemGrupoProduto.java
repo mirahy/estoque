@@ -5,6 +5,7 @@
  */
 package br.edu.ifms.estoque.view;
 
+import br.edu.ifms.estoque.dao.IGrupoProdutoDao;
 import br.edu.ifms.estoque.database.GrupoProdutoResultSetTableModel;
 import br.edu.ifms.estoque.model.GrupoProduto;
 import br.edu.ifms.estoque.queries.GrupoProdutoQueries;
@@ -40,7 +41,7 @@ public class TelaListagemGrupoProduto extends JFrame {
 
     public TelaListagemGrupoProduto() {
         super("Listagem de Grupos de Produtos");
-        queries = new GrupoProdutoQueries();
+        queries = (IGrupoProdutoDao) new GrupoProdutoQueries();
         criarBotoes();
         criarTabela();
         atualizarTabela();

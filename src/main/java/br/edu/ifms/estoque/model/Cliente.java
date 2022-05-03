@@ -26,6 +26,17 @@ public class Cliente implements Serializable {
     private String email;
     private String cpf;
 
+    public Cliente() {
+    }
+    
+    public Cliente(ClienteDiretor diretor) {
+         id = diretor.id;
+         nome = diretor.nome;
+         telefone = diretor.telefone;
+         email = diretor.email;
+         cpf = diretor.cpf;
+     }
+
     public Long getId() {
         return id;
     }
@@ -64,5 +75,42 @@ public class Cliente implements Serializable {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+    
+    public static class ClienteDiretor{
+        private Long id;
+        private String nome;
+        private String telefone;
+        private String email;
+        private String cpf;
+        
+        public ClienteDiretor wihtId(Long id){
+            this.id = id;
+            return this;
+        }
+        
+        public ClienteDiretor wihtNome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        
+        public ClienteDiretor wihtTelefone(String telefone){
+            this.telefone = telefone;
+            return this;
+        }
+        
+        public ClienteDiretor wihtEmail(String email){
+            this.email = email;
+            return this;
+        }
+        
+        public ClienteDiretor wihtCpf(String cpf){
+            this.cpf = cpf;
+            return this;
+        }
+        
+        public Cliente construir(){
+            return new Cliente(this);
+        }
     }
 }

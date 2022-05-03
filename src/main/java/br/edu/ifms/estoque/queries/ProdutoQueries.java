@@ -54,9 +54,10 @@ public class ProdutoQueries {
                 rs.getLong("grupo_produto_id"),
                 rs.getString("grupo_produto_nome"),
                 subGrupo);
-        Marca marca = new Marca(
-                rs.getLong("marca_id"),
-                rs.getString("marca_nome"));
+        Marca marca = new Marca.MarcaDiretor()
+                .wihtId(rs.getLong("marca_id"))
+                .wihtNome(rs.getString("marca_nome"))
+                .construir();
         UnidadeMedida unidadeMedida = new UnidadeMedida(
                 rs.getLong("unidade_medida_id"),
                 rs.getString("unidade_medida_nome"),

@@ -82,15 +82,17 @@ public class GrupoProdutoQueries {
             resultSet = selectAllGrupos.executeQuery();
             results = new ArrayList<GrupoProduto>();
             while (resultSet.next()) {
-                GrupoProduto subGrupo = new GrupoProduto(
-                        resultSet.getLong("subgrupo_id"),
-                        resultSet.getString("subgrupo_nome"), null);
+                GrupoProduto subGrupo = new GrupoProduto.GrupoProdutoDiretor()
+                        .wihtId(resultSet.getLong("subgrupo_id"))
+                        .wihtNome(resultSet.getString("subgrupo_nome"))
+                        .contruir();
 
-                results.add(new GrupoProduto(
-                        resultSet.getLong("id"),
-                        resultSet.getString("nome"),
-                        subGrupo
-                ));
+                results.add(new GrupoProduto.GrupoProdutoDiretor()
+                        .wihtId(resultSet.getLong("id"))
+                        .wihtNome(resultSet.getString("nome"))
+                        .wihtGrupoProduto(subGrupo)
+                        .contruir());
+                       
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -114,15 +116,16 @@ public class GrupoProdutoQueries {
             resultSet = selectGrupoByNome.executeQuery();
             results = new ArrayList<GrupoProduto>();
             while (resultSet.next()) {
-                GrupoProduto subGrupo = new GrupoProduto(
-                        resultSet.getLong("subgrupo_id"),
-                        resultSet.getString("subgrupo_nome"), null);
+                GrupoProduto subGrupo = new GrupoProduto.GrupoProdutoDiretor()
+                        .wihtId(resultSet.getLong("subgrupo_id"))
+                        .wihtNome(resultSet.getString("subgrupo_nome"))
+                        .contruir();
 
-                results.add(new GrupoProduto(
-                        resultSet.getLong("id"),
-                        resultSet.getString("nome"),
-                        subGrupo
-                ));
+                results.add(new GrupoProduto.GrupoProdutoDiretor()
+                        .wihtId(resultSet.getLong("id"))
+                        .wihtNome(resultSet.getString("nome"))
+                        .wihtGrupoProduto(subGrupo)
+                        .contruir());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

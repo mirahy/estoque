@@ -20,6 +20,14 @@ public class MarcaDaoImpl implements IMarcaDao {
 
     private static final String JPQL = "SELECT m FROM Marca m";
 
+    public MarcaDaoImpl(Conexao instance) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public MarcaDaoImpl() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     
     private EntityManager getEntityManager() {
         return Conexao.createEntityManager();

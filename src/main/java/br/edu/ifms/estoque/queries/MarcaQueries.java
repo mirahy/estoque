@@ -75,9 +75,10 @@ public class MarcaQueries {
     }
 
     private Marca converter(ResultSet rs) throws SQLException {
-        Marca marca = new Marca(
-                rs.getLong("id"),
-                rs.getString("nome"));
+        Marca marca = new Marca.MarcaDiretor()
+                .wihtId(rs.getLong("id"))
+                .wihtNome(rs.getString("nome"))
+                .construir();
         return marca;
     }
 

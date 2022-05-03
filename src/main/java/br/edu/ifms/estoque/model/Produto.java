@@ -64,6 +64,20 @@ public class Produto {
         this.unidadeMedida = unidadeMedida;
     }
 
+    public Produto(ProdutoDiretor diretor) {
+        id = diretor.id;
+        nome = diretor.nome;
+        descricao = diretor.descricao;
+        preco = diretor.preco;
+        estoque = diretor.estoque;
+        estoqueMinimo = diretor.estoqueMinimo;
+        dataUltimaCompra = diretor.dataUltimaCompra;
+        grupoProduto = diretor.grupoProduto;
+        marca = diretor.marca;
+        unidadeMedida = diretor.unidadeMedida;
+        
+    }
+
     public Long getId() {
         return id;
     }
@@ -142,6 +156,73 @@ public class Produto {
 
     public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
+    }
+    
+    public static class ProdutoDiretor{
+        private Long id;
+        private String nome;
+        private String descricao;
+        private BigDecimal preco;
+        private BigDecimal estoque;
+        private BigDecimal estoqueMinimo;
+        private LocalDateTime dataUltimaCompra;
+        private GrupoProduto grupoProduto;
+        private Marca marca;
+        private UnidadeMedida unidadeMedida;
+        
+        public ProdutoDiretor wihtId(Long id){
+            this.id = id;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtNome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtDescricao(String descricao){
+            this.descricao = descricao;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtPreco(BigDecimal preco){
+            this.preco = preco;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtEstoque(BigDecimal estoque){
+            this.estoque = estoque;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtEstoqueMinimo(BigDecimal estoqueMinimo){
+            this.estoqueMinimo = estoqueMinimo;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtDataUltimaCompra(LocalDateTime dataUltimaCompra){
+            this.dataUltimaCompra = dataUltimaCompra;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtGrupoProduto(GrupoProduto grupoProduto){
+            this.grupoProduto = grupoProduto;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtMarca(Marca marca){
+            this.marca = marca;
+            return this;
+        }
+        
+        public ProdutoDiretor wihtUnidadeMedida(UnidadeMedida unidadeMedida){
+            this.unidadeMedida = unidadeMedida;
+            return this;
+        }
+        
+        public Produto construir(){
+            return new Produto(this);
+        }
     }
     
 }

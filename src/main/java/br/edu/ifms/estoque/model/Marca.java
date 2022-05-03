@@ -15,7 +15,7 @@ import javax.persistence.Id;
  * @author santos
  */
 @Entity
-public class Marca {
+public class Marca extends Object{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,9 +24,9 @@ public class Marca {
     public Marca() {
     }
 
-    public Marca(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
+    private Marca(MarcaDiretor diretor) {
+        id = diretor.id;
+        nome = diretor.nome;
     }
 
     public Long getId() {
@@ -50,5 +50,24 @@ public class Marca {
         array[0] = this.id;
         array[1] = this.nome;
         return array;
+    }
+    
+    public static class MarcaDiretor{
+        private Long id;
+        private String nome;
+        
+        public MarcaDiretor wihtId(Long id){
+            this.id = id;
+            return this;
+        }
+        
+        public MarcaDiretor wihtNome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        
+        public Marca construir(){
+            return new Marca(this);
+        }
     }
 }
